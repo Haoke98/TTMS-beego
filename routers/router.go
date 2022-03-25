@@ -36,9 +36,6 @@ func init() {
 		//首页
 		web.NSRouter("/index/index", &controllers.IndexController{}, "get:Index"),
 
-		//用户管理
-		web.NSRouter("/admin_user/index", &controllers.AdminUserController{}, "get:Index"),
-
 		//操作日志
 		web.NSRouter("/admin_log/index", &controllers.AdminLogController{}, "get:Index"),
 
@@ -55,6 +52,8 @@ func init() {
 		//菜单管理-删除菜单
 		web.NSRouter("/admin_menu/del", &controllers.AdminMenuController{}, "post:Del"),
 
+		//用户管理
+		web.NSRouter("/admin_user/index", &controllers.AdminUserController{}, "get:Index"),
 		//系统管理-个人资料
 		web.NSRouter("/admin_user/profile", &controllers.AdminUserController{}, "get:Profile"),
 		//系统管理-个人资料-修改昵称
@@ -98,7 +97,6 @@ func init() {
 		web.NSRouter("/admin_role/access", &controllers.AdminRoleController{}, "get:Access"),
 		//菜单管理-角色管理-角色授权
 		web.NSRouter("/admin_role/access_operate", &controllers.AdminRoleController{}, "post:AccessOperate"),
-
 		//设置中心-后台设置
 		web.NSRouter("/setting/admin", &controllers.SettingController{}, "get:Admin"),
 		//设置中心-更新设置
@@ -150,6 +148,11 @@ func init() {
 		web.NSRouter("/user/del", &controllers.UserController{}, "post:Del"),
 		//用户管理-导出
 		web.NSRouter("/user/export", &controllers.UserController{}, "get:Export"),
+
+		web.NSRouter("/train-management/index", &controllers.AdminTrainController{}, "get:Index"),
+		web.NSRouter("/train-management/add", &controllers.AdminTrainController{}, "get:Add"),
+		web.NSRouter("/train-management/create", &controllers.AdminTrainController{}, "post:Create"),
+		web.NSRouter("/train-management/edit", &controllers.AdminTrainController{}, "get:Edit"),
 	)
 
 	web.AddNamespace(admin)

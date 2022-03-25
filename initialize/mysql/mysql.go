@@ -29,4 +29,5 @@ func init() {
 	if err != nil {
 		beego.Error("mysql register database error:", err)
 	}
+	orm.RunSyncdb("default", true, true)
 }

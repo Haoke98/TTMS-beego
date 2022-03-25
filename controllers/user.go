@@ -69,7 +69,7 @@ func (uc *UserController) Export() {
 			}
 			record = append(record, item.Username)
 			record = append(record, item.Mobile)
-			record = append(record, item.Nickname)
+			record = append(record, item.FullName)
 
 			if item.Status == 1 {
 				record = append(record, "是")

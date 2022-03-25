@@ -23,9 +23,9 @@ type UserForm struct {
 func (f UserForm) Messages() map[string]string {
 	return validate.MS{
 		"UserLevelId.required": "用户等级不能为空.",
-		"Username.required":    "用户名不能为空.",
+		"Title.required":       "用户名不能为空.",
 		"Mobile.required":      "手机号不能为空.",
-		"Nickname.required":    "昵称不能为空.",
-		"Password.required":    "密码不能为空.",
+		"FullName.required":    "昵称不能为空.",
+		"Summary.required":     "密码不能为空.",
 	}
 }

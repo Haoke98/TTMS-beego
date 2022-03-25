@@ -34,7 +34,7 @@ func (us *UserService) GetPaginateData(listRows int, params url.Values) ([]*mode
 func (*UserService) Create(form *formvalidate.UserForm) int {
 	user := models.User{
 		Username:    form.Username,
-		Nickname:    form.Nickname,
+		FullName:    form.Nickname,
 		UserLevelId: form.UserLevelId,
 		Mobile:      form.Mobile,
 		Description: form.Description,
@@ -87,7 +87,7 @@ func (*UserService) Update(form *formvalidate.UserForm) int {
 		}
 
 		user.Username = form.Username
-		user.Nickname = form.Nickname
+		user.FullName = form.Nickname
 		user.UserLevelId = form.UserLevelId
 		user.Mobile = form.Mobile
 		user.Description = form.Description

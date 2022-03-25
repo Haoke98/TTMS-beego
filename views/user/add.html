@@ -35,20 +35,6 @@
                                 maxFileSize: 10240,
                             });
                         </script>
-                        <div class="form-group">
-                            <label for="user_level_id" class="col-sm-2 control-label">用户等级</label>
-                            <div class="col-sm-10 col-md-4">
-                                <select name="user_level_id" id="user_level_id" class="form-control field-select"
-                                        data-placeholder="请选择用户等级">
-                                    <option value=""></option>
-                                    {{range $key,$item := .user_level_list}}
-                                    <option value="{{$item.Id}}">
-                                        {{$item.Name}}
-                                    </option>
-                                    {{end}}
-                                </select>
-                            </div>
-                        </div>
                         <script>
                             $('#user_level_id').select2();
                         </script>
@@ -67,13 +53,19 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="nickname" class="col-sm-2 control-label">昵称</label>
+                            <label for="fullName" class="col-sm-2 control-label">姓名</label>
                             <div class="col-sm-10 col-md-4">
-                                <input id="nickname" name="nickname" value=""
+                                <input id="fullName" name="nickname" value=""
                                        placeholder="请输入昵称" type="text" class="form-control field-text">
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label for="fullNamePinYin" class="col-sm-2 control-label">姓名（拼音）</label>
+                            <div class="col-sm-10 col-md-4">
+                                <input id="fullNamePinYin" name="nickname" value=""
+                                       placeholder="请输入昵称" type="text" class="form-control field-text">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="password" class="col-sm-2 control-label">密码</label>
                             <div class="col-sm-10 col-md-4">

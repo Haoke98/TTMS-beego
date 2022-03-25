@@ -2116,7 +2116,7 @@ CREATE TABLE `admin_menu`  (
 -- ----------------------------
 -- Records of admin_menu
 -- ----------------------------
-INSERT INTO `admin_menu` VALUES (1, 0, '后台首页', 'admin/index/index', 'fa-home', 1, 99, '不记录');
+INSERT INTO `admin_menu` VALUES (1, 0, '首页', 'admin/index/index', 'fa-home', 1, 99, '不记录');
 INSERT INTO `admin_menu` VALUES (2, 0, '系统管理', 'admin/sys', 'fa-desktop', 1, 1099, '不记录');
 INSERT INTO `admin_menu` VALUES (3, 2, '用户管理', 'admin/admin_user/index', 'fa-user', 1, 1000, '不记录');
 INSERT INTO `admin_menu` VALUES (4, 3, '添加用户界面', 'admin/admin_user/add', 'fa-plus', 0, 1000, '不记录');
@@ -2366,9 +2366,9 @@ CREATE TABLE `setting`  (
 -- ----------------------------
 -- Records of setting
 -- ----------------------------
-INSERT INTO `setting` VALUES (1, 1, '基本设置', '后台的基本信息设置', 'base', '[{\"Name\":\"后台名称\",\"Field\":\"name\",\"Type\":\"text\",\"Content\":\"beego通用后台系统\",\"Option\":\"\",\"Form\":\"\"},{\"Name\":\"后台简称\",\"Field\":\"short_name\",\"Type\":\"text\",\"Content\":\"beego通用后台系统\",\"Option\":\"\",\"Form\":\"\"},{\"Name\":\"后台作者\",\"Field\":\"author\",\"Type\":\"text\",\"Content\":\"虞行飞\",\"Option\":\"\",\"Form\":\"\"},{\"Name\":\"后台版本\",\"Field\":\"version\",\"Type\":\"text\",\"Content\":\"0.1\",\"Option\":\"\",\"Form\":\"\"}]', 1000, 1587879871, 1596008207, 0);
+INSERT INTO `setting` VALUES (1, 1, '基本设置', '后台的基本信息设置', 'base', '[{\"Name\":\"后台名称\",\"Field\":\"name\",\"Type\":\"text\",\"Content\":\"教师资格培训管理系统\",\"Option\":\"\",\"Form\":\"\"},{\"Name\":\"后台简称\",\"Field\":\"short_name\",\"Type\":\"text\",\"Content\":\"TTMS\",\"Option\":\"\",\"Form\":\"\"},{\"Name\":\"后台作者\",\"Field\":\"author\",\"Type\":\"text\",\"Content\":\"萨达木·沙地克\",\"Option\":\"\",\"Form\":\"\"},{\"Name\":\"后台版本\",\"Field\":\"version\",\"Type\":\"text\",\"Content\":\"1.0.0\",\"Option\":\"\",\"Form\":\"\"}]', 1000, 1587879871, 1596008207, 0);
 INSERT INTO `setting` VALUES (2, 1, '登录设置', '后台登录相关设置', 'login', '[{\"Name\":\"登录token验证\",\"Field\":\"token\",\"Type\":\"switch\",\"Content\":\"1\",\"Option\":\"\",\"Form\":\"\"},{\"Name\":\"验证码\",\"Field\":\"captcha\",\"Type\":\"select\",\"Content\":\"1\",\"Option\":\"0||不开启\\r\\n1||图形验证码\",\"Form\":\"\"},{\"Name\":\"登录背景\",\"Field\":\"background\",\"Type\":\"image\",\"Content\":\"/static/uploads/attachment/ea08c391-0eb4-4c6a-8e4f-9846c51d61cc.jpg\",\"Option\":\"\",\"Form\":\"\"}]', 1, 1587879871, 1595556703, 0);
-INSERT INTO `setting` VALUES (3, 1, '首页设置', '后台首页参数设置', 'index', '[{\"Name\":\"默认密码警告\",\"Field\":\"password_warning\",\"Type\":\"switch\",\"Content\":\"1\",\"Option\":\"\",\"Form\":\"\"},{\"Name\":\"是否显示提示信息\",\"Field\":\"show_notice\",\"Type\":\"switch\",\"Content\":\"1\",\"Option\":\"\",\"Form\":\"\"},{\"Name\":\"提示信息内容\",\"Field\":\"notice_content\",\"Type\":\"text\",\"Content\":\"欢迎来到使用本系统，左侧为菜单区域，右侧为功能区。\",\"Option\":\"\",\"Form\":\"\"}]', 1, 1587879871, 1596008219, 0);
+INSERT INTO `setting` VALUES (3, 1, '首页设置', '后台首页参数设置', 'index', '[{\"Name\":\"默认密码警告\",\"Field\":\"password_warning\",\"Type\":\"switch\",\"Content\":\"1\",\"Option\":\"\",\"Form\":\"\"},{\"Name\":\"是否显示提示信息\",\"Field\":\"show_notice\",\"Type\":\"switch\",\"Content\":\"1\",\"Option\":\"\",\"Form\":\"\"},{\"Name\":\"提示信息内容\",\"Field\":\"notice_content\",\"Type\":\"text\",\"Content\":\"本系统为主要是关于\",\"Option\":\"\",\"Form\":\"\"}]', 1, 1587879871, 1596008219, 0);
 
 -- ----------------------------
 -- Table structure for setting_group

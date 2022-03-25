@@ -17,9 +17,9 @@ type AdminUserForm struct {
 // Messages 自定义验证返回消息
 func (f AdminUserForm) Messages() map[string]string {
 	return validate.MS{
-		"Username.required": "请填写账号.",
-		"Password.required": "请填写密码.",
-		"Nickname.required": "请填写昵称.",
+		"Title.required":    "请填写账号.",
+		"Summary.required":  "请填写密码.",
+		"FullName.required": "请填写昵称.",
 		"Role.required":     "请选择角色.",
 	}
 }

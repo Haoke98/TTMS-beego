@@ -5,7 +5,7 @@
     <div class="row">
         <div class="pad margin no-print">
             <div class="callout callout-info">
-                <h4><i class="fa fa-info"></i> 您好,{{if ne .login_user.Nickname ""}}{{.login_user.Nickname}}{{else}}管理员{{end}}:</h4>
+                <h4><i class="fa fa-info"></i> 欢迎来到教师资格培训管理系统:</h4>
                 {{.notice_content}}
             </div>
         </div>
@@ -19,7 +19,7 @@
                     <i class="fa fa-user"></i>
                 </span>
                 <div class="info-box-content">
-                    <span class="info-box-text">后台用户</span>
+                    <span class="info-box-text">今日打卡情况</span>
                     <span class="info-box-number">{{.admin_user_count}}</span>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                     <i class="fa fa-users"></i>
                 </span>
                 <div class="info-box-content">
-                    <span class="info-box-text">后台角色</span>
+                    <span class="info-box-text">当前已经注册的用户量</span>
                     <span class="info-box-number">{{.admin_role_count}}</span>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                     <i class="fa fa-list"></i>
                 </span>
                 <div class="info-box-content">
-                    <span class="info-box-text">后台菜单</span>
+                    <span class="info-box-text">正在执行的培训计划</span>
                     <span class="info-box-number">{{.admin_menu_count}}</span>
                 </div>
             </div>
@@ -65,10 +65,10 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" >
         <section class="col-lg-7 connectedSortable" id="sortable1">
 
-            <div class="box sortable-widget" id="user_info">
+            <div class="box sortable-widget" id="user_info" style="display: none">
                 <div class="box-header with-border">
                     <h3 class="box-title">访问信息</h3>
                 </div>
@@ -94,7 +94,7 @@
                 </div>
             </div>
 
-            <div class="box sortable-widget" id="system_info">
+            <div class="box sortable-widget" id="system_info" style="display: none">
                 <div class="box-header with-border">
                     <h3 class="box-title">系统信息</h3>
                 </div>
@@ -133,7 +133,7 @@
             </div>
         </section>
 
-        <section class="col-lg-5 connectedSortable" id="composer_info">
+        <section class="col-lg-5 connectedSortable" id="composer_info" style="display: none">
             <div class="box sortable-widget" id="widget2">
                 <div class="box-header with-border">
                     <h3 class="box-title">依赖关系</h3>

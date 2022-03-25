@@ -105,10 +105,10 @@
                             </th>
                             <th>ID</th>
                             <th>头像</th>
-                            <th>用户等级</th>
                             <th>用户名</th>
                             <th>手机号</th>
-                            <th>昵称</th>
+                            <th>姓名</th>
+                            <th>姓名拼音</th>
                             <th>是否启用</th>
                             <th>创建时间</th>
 
@@ -125,10 +125,10 @@
                             </td>
                             <td>{{$item.Id}}</td>
                             <td><img style="max-width: 40px" src="{{$item.Avatar}}"></td>
-                            <td>{{ map_get $.user_level_map $item.UserLevelId }}</td>
                             <td>{{$item.Username}}</td>
                             <td>{{$item.Mobile}}</td>
-                            <td>{{$item.Nickname}}</td>
+                            <td>{{$item.FullName}}</td>
+                            <td>{{$item.FullNamePinYin}}</td>
                             <td>{{if eq $item.Status 1}}<span class="label label-success">是</span> {{else}} <span class="label label-warning">否</span> {{end}}</td>
                             <td>{{$item.CreateTime | UnixTimeForFormat}}</td>
 
