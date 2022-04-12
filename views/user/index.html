@@ -111,6 +111,7 @@
                             <th>姓名拼音</th>
                             <th>是否启用</th>
                             <th>创建时间</th>
+                            <th>更新时间</th>
 
                             <th>操作</th>
                         </tr>
@@ -131,6 +132,7 @@
                             <td>{{$item.FullNamePinYin}}</td>
                             <td>{{if eq $item.Status 1}}<span class="label label-success">是</span> {{else}} <span class="label label-warning">否</span> {{end}}</td>
                             <td>{{$item.CreateTime | UnixTimeForFormat}}</td>
+                            <td>{{$item.UpdateTime | UnixTimeForFormat}}</td>
 
                             <td class="td-do">
                                 <a href="/admin/user/edit?id={{$item.Id}}"

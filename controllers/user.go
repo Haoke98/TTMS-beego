@@ -56,20 +56,17 @@ func (uc *UserController) Export() {
 		}
 
 		data := userService.GetExportData(gQueryParams)
-		header := []string{"ID", "头像", "用户等级", "用户名", "手机号", "昵称", "是否启用", "创建时间"}
+		header := []string{"ID", "头像", "用户名", "手机号", "姓名", "姓名（拼音）", "是否启用", "创建时间"}
 		body := [][]string{}
 		for _, item := range data {
 			record := []string{
 				strconv.Itoa(item.Id),
 				item.Avatar,
 			}
-			userLevelName, ok := userLevelMap[item.UserLevelId]
-			if ok {
-				record = append(record, userLevelName)
-			}
 			record = append(record, item.Username)
 			record = append(record, item.Mobile)
 			record = append(record, item.FullName)
+			record = append(record, item.FullNamePinYin)
 
 			if item.Status == 1 {
 				record = append(record, "是")

@@ -19,7 +19,7 @@ func (f AdminUserForm) Messages() map[string]string {
 	return validate.MS{
 		"Title.required":    "请填写账号.",
 		"Summary.required":  "请填写密码.",
-		"FullName.required": "请填写昵称.",
+		"Nickname.required": "请填写昵称.",
 		"Role.required":     "请选择角色.",
 	}
 }

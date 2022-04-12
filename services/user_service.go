@@ -33,14 +33,14 @@ func (us *UserService) GetPaginateData(listRows int, params url.Values) ([]*mode
 // Create 新增用户
 func (*UserService) Create(form *formvalidate.UserForm) int {
 	user := models.User{
-		Username:    form.Username,
-		FullName:    form.Nickname,
-		UserLevelId: form.UserLevelId,
-		Mobile:      form.Mobile,
-		Description: form.Description,
-		Status:      int8(form.Status),
-		CreateTime:  int(time.Now().Unix()),
-		UpdateTime:  int(time.Now().Unix()),
+		Username:       form.Username,
+		FullName:       form.FullName,
+		FullNamePinYin: form.FullNamePinyin,
+		Mobile:         form.Mobile,
+		Description:    form.Description,
+		Status:         form.Status,
+		CreateTime:     int(time.Now().Unix()),
+		UpdateTime:     int(time.Now().Unix()),
 	}
 	if form.Avatar != "" {
 		user.Avatar = form.Avatar
@@ -87,8 +87,8 @@ func (*UserService) Update(form *formvalidate.UserForm) int {
 		}
 
 		user.Username = form.Username
-		user.FullName = form.Nickname
-		user.UserLevelId = form.UserLevelId
+		user.FullName = form.FullName
+		user.FullNamePinYin = form.FullNamePinyin
 		user.Mobile = form.Mobile
 		user.Description = form.Description
 		user.Status = int8(form.Status)
