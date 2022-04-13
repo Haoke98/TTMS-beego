@@ -1,6 +1,6 @@
 package conf
 
-// mysql相关配置
+// Mysql mysql相关配置
 type Mysql struct {
 	Host     string `mapstructure:"host" json:"host" yaml:"host"`
 	Port     int    `mapstructure:"port" json:"port" yaml:"port"`
