@@ -11,50 +11,46 @@
                         </a>
                     </div>
                 </div>
-                <form id="dataForm" class="form-horizontal dataForm" action="/admin/admin_user/update" method="post"
+                <form id="dataForm" class="form-horizontal dataForm" action="/admin/train-management/update" method="post"
                       enctype="multipart/form-data">
                     <input type="hidden" name="id" value="{{.data.Id}}">
                     <div class="box-body">
                         <div class="form-group">
-                            <label for="role" class="col-sm-2 control-label">角色</label>
+                            <label for="title" class="col-sm-2 control-label">标题</label>
                             <div class="col-sm-10 col-md-4">
-                                <select name="role[]" id="role" class="form-control field-multi-select"
-                                        multiple="multiple">
-                                    {{range $key,$item := .roles}}
-                                        <option value="{{$item.Id}}" {{range $key1,$item1 := $.role_arr}}{{if compare $item1 $item.Id}}selected{{end}}{{end}}>
-                                            {{$item.Name}}
-                                        </option>
-                                    {{end}}
-                                </select>
+                                <input maxlength="50" class="form-control" id="title" placeholder="请给本次培训计划起个标题"
+                                       name="title" value="{{.data.Title}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="personInCharge" class="col-sm-2 control-label">负责人姓名</label>
+                            <div class="col-sm-10 col-md-3">
+                                <input maxlength="50" class="form-control" id="personInCharge"
+                                       placeholder="此处请填写计划负责人或者你本人的姓名"
+                                       name="personInCharge" value="{{.data.PersonInCharge}}">
+                            </div>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="registrationStartedAt" class="col-sm-2 control-label">报名开始时间</label>
+                            <div class="col-sm-10 col-md-4">
+                                <input type="datetime-local" id="registrationStartedAt" name="registrationStartedAt">
                             </div>
                         </div>
                         <script>
-                            $('#role').select2();
+                            $('#registrationStartedAt').val('{{.data.RegistrationStartedAt.Format "2006-01-02T15:04" }}')
                         </script>
 
                         <div class="form-group">
-                            <label for="nickname" class="col-sm-2 control-label">昵称</label>
+                            <label for="registrationEndAt" class="col-sm-2 control-label">报名结束时间</label>
                             <div class="col-sm-10 col-md-4">
-                                <input maxlength="50" class="form-control" id="nickname" placeholder="请输入昵称" name="nickname" value="{{.data.Nickname}}">
+                                <input type="datetime-local" id="registrationEndAt" name="registrationEndAt" >
                             </div>
                         </div>
+                        <script>
+                            $('#registrationEndAt').val('{{.data.RegistrationEndAt.Format "2006-01-02T15:04" }}')
+                        </script>
 
-                        <div class="form-group">
-                            <label for="username" class="col-sm-2 control-label">账号</label>
-                            <div class="col-sm-10 col-md-4">
-                                <input maxlength="50" id="username" autocomplete="off" name="username"
-                                       value="{{.data.Username}}" class="form-control" placeholder="请输入账号">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password" class="col-sm-2 control-label">密码</label>
-                            <div class="col-sm-10 col-md-4">
-                                <input maxlength="255" id="password" autocomplete="off" type="password" name="password"
-                                       value="{{.data.Password}}" class="form-control" placeholder="请输入密码">
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label for="status" class="col-sm-2 control-label">启用状态</label>
@@ -73,6 +69,21 @@
                                 onSwitchChange: function (event, state) {
                                     $(event.target).closest('.bootstrap-switch').next().val(state ? '1' : '0').change();
                                 }
+                            });
+                        </script>
+                        </script>
+                        <div class="form-group">
+                            <label for="summary" class="col-sm-2 control-label">简介</label>
+                            <div class="col-sm-10 col-md-10">
+                                <script id="summary" name="summary" type="text/plain">
+                                    {{str2html .data.Summary}}
+                                </script>
+                            </div>
+                        </div>
+                        <script>
+                            UE.delEditor('summary');
+                            var description = UE.getEditor('summary', {
+                                serverUrl: UEServer
                             });
                         </script>
                     </div>

@@ -80,53 +80,43 @@ func (auc *AdminTrainController) Edit() {
 	}
 
 	var (
-		adminUserService services.AdminUserService
-		adminRoleService services.AdminRoleService
+		trainService services.TrainService
 	)
 
-	adminUser := adminUserService.GetAdminUserById(id)
-	if adminUser == nil {
+	train := trainService.GetAdminUserById(id)
+	if train == nil {
 		response.ErrorWithMessage("Not Found Info By Id.", auc.Ctx)
 	}
-
-	roles := adminRoleService.GetAllData()
-	auc.Data["roles"] = roles
-	auc.Data["data"] = adminUser
-	auc.Data["role_arr"] = strings.Split(adminUser.Role, ",")
+	auc.Data["data"] = train
 
 	auc.Layout = "public/base.html"
-	auc.TplName = "admin_user/edit.html"
+	auc.TplName = "train/edit.html"
 }
 
 // Update 系统管理-用户管理-修改
 func (auc *AdminTrainController) Update() {
-	var adminUserForm formvalidate.AdminUserForm
-	if err := auc.ParseForm(&adminUserForm); err != nil {
+	var trainForm formvalidate.TrainForm
+	if err := auc.ParseForm(&trainForm); err != nil {
 		response.ErrorWithMessage(err.Error(), auc.Ctx)
 	}
 
-	if adminUserForm.Id <= 0 {
+	if trainForm.Id <= 0 {
 		response.ErrorWithMessage("Params is Error.", auc.Ctx)
 	}
 
-	roles := make([]string, 0)
-	auc.Ctx.Input.Bind(&roles, "role")
-
-	adminUserForm.Role = strings.Join(roles, ",")
-
-	v := validate.Struct(adminUserForm)
+	v := validate.Struct(trainForm)
 
 	if !v.Validate() {
 		response.ErrorWithMessage(v.Errors.One(), auc.Ctx)
 	}
 
 	//账号验重
-	var adminUserService services.AdminUserService
-	if adminUserService.IsExistName(strings.TrimSpace(adminUserForm.Username), adminUserForm.Id) {
+	var trainService services.TrainService
+	if trainService.IsExistName(strings.TrimSpace(trainForm.Title), trainForm.Id) {
 		response.ErrorWithMessage("账号已经存在", auc.Ctx)
 	}
 
-	num := adminUserService.Update(&adminUserForm)
+	num := trainService.Update(&trainForm)
 
 	if num > 0 {
 		response.Success(auc.Ctx)

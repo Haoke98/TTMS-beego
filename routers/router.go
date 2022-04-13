@@ -153,6 +153,7 @@ func init() {
 		web.NSRouter("/train-management/add", &controllers.AdminTrainController{}, "get:Add"),
 		web.NSRouter("/train-management/create", &controllers.AdminTrainController{}, "post:Create"),
 		web.NSRouter("/train-management/edit", &controllers.AdminTrainController{}, "get:Edit"),
+		web.NSRouter("/train-management/update", &controllers.AdminTrainController{}, "post:Update"),
 	)
 
 	web.AddNamespace(admin)

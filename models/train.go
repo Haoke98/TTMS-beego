@@ -14,7 +14,7 @@ type Train struct {
 	CreatedAt             time.Time `orm:"column(createdAt);" description:"创建时间" json:"createdAt"`
 	UpdatedAt             time.Time `orm:"column(updatedAt);" description:"创建时间" json:"updatedAt"`
 	Title                 string    `orm:"column(title);size(255)" description:"用户名" json:"title"`
-	Summary               string    `orm:"column(summary);size(255)" description:"密码" json:"summary"`
+	Summary               string    `orm:"column(summary);type(text)" description:"密码" json:"summary"`
 	RegistrationStartedAt time.Time `orm:"column(registrationStartedAt);" description:"报名开始时间" json:"registrationStartedAt"`
 	RegistrationEndAt     time.Time `orm:"column(registrationEndAt);" description:"报名结束时间" json:"registrationEndAt"`
 	PersonInCharge        string    `orm:"column(personInCharge);" description:"负责人" json:"personInCharge"`

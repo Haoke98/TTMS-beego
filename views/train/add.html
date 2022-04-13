@@ -12,7 +12,8 @@
                     </div>
                     <h2>新增培训计划：</h2>
                 </div>
-                <form id="dataForm" class="form-horizontal dataForm" action="/admin/train-management/create" method="post"
+                <form id="dataForm" class="form-horizontal dataForm" action="/admin/train-management/create"
+                      method="post"
                       enctype="multipart/form-data">
                     <div class="box-body">
                         <div class="form-group">
@@ -23,11 +24,11 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="summary" class="col-sm-2 control-label">简介</label>
-                            <div class="col-sm-10 col-md-4">
-                                <textarea maxlength="50" class="form-control" id="summary"
-                                          placeholder="大概描述一下本次培训计划的内容及概括的范围"
-                                          name="summary"></textarea>
+                            <label for="personInCharge" class="col-sm-2 control-label">负责人姓名</label>
+                            <div class="col-sm-10 col-md-3">
+                                <input maxlength="50" class="form-control" id="personInCharge"
+                                       placeholder="此处请填写计划负责人或者你本人的姓名"
+                                       name="personInCharge" value="">
                             </div>
                         </div>
 
@@ -44,13 +45,7 @@
                                 <input type="datetime-local" id="registrationEndAt" name="registrationEndAt">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="personInCharge" class="col-sm-2 control-label">负责人姓名</label>
-                            <div class="col-sm-10 col-md-4">
-                                <input maxlength="50" class="form-control" id="personInCharge" placeholder="此处请填写计划负责人或者你本人的姓名"
-                                       name="personInCharge" value="">
-                            </div>
-                        </div>
+
                         <div class="form-group">
                             <label for="status" class="col-sm-2 control-label">启用状态</label>
                             <div class="col-sm-10 col-md-4">
@@ -58,7 +53,6 @@
                                 <input class="switch field-switch" name="status" value="1" hidden/>
                             </div>
                         </div>
-
                         <script>
                             $('#status').bootstrapSwitch({
                                 onText: "是",
@@ -70,6 +64,21 @@
                                 }
                             });
                         </script>
+                        <div class="form-group">
+                            <label for="summary" class="col-sm-2 control-label">简介</label>
+                            <div class="col-sm-10 col-md-10">
+                                <script id="summary" name="summary" type="text/plain">
+                                </script>
+                            </div>
+                        </div>
+                        <script>
+                            UE.delEditor('summary');
+                            var description = UE.getEditor('summary', {
+                                serverUrl: UEServer
+                            });
+                        </script>
+
+
                     </div>
 
                     <!--表单底部-->

@@ -7,6 +7,7 @@ import (
 
 // TrainForm 培训计划表单
 type TrainForm struct {
+	Id                    int       `form:"id"`
 	Title                 string    `form:"title" validate:"required"`
 	Summary               string    `form:"summary" validate:"required"`
 	RegistrationStartedAt time.Time `form:"registrationStartedAt" validate:"required"`

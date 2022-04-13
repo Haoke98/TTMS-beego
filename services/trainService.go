@@ -8,6 +8,7 @@ import (
 	"beego-admin/utils/page"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/server/web/context"
 	"net/url"
@@ -21,14 +22,14 @@ type TrainService struct {
 }
 
 // GetAdminUserById 根据id获取一条admin_user数据
-func (*TrainService) GetAdminUserById(id int) *models.AdminUser {
+func (*TrainService) GetAdminUserById(id int) *models.Train {
 	o := orm.NewOrm()
-	adminUser := models.AdminUser{Id: id}
-	err := o.Read(&adminUser)
+	train := models.Train{Id: id}
+	err := o.Read(&train)
 	if err != nil {
 		return nil
 	}
-	return &adminUser
+	return &train
 }
 
 // AuthCheck 权限检测
@@ -149,11 +150,11 @@ func (ts *TrainService) GetPaginateData(listRows int, params url.Values) ([]*mod
 }
 
 // IsExistName 名称验重
-func (*TrainService) IsExistName(username string, id int) bool {
+func (*TrainService) IsExistName(title string, id int) bool {
 	if id == 0 {
-		return orm.NewOrm().QueryTable(new(models.AdminUser)).Filter("username", username).Exist()
+		return orm.NewOrm().QueryTable(new(models.Train)).Filter("title", title).Exist()
 	}
-	return orm.NewOrm().QueryTable(new(models.AdminUser)).Filter("username", username).Exclude("id", id).Exist()
+	return orm.NewOrm().QueryTable(new(models.Train)).Filter("title", title).Exclude("id", id).Exist()
 }
 
 // Create 新增admin user用户
@@ -172,26 +173,24 @@ func (*TrainService) Create(form *formvalidate.TrainForm) int {
 
 	if err == nil {
 		return int(id)
+	} else {
+		fmt.Println(err)
 	}
 	return 0
 }
 
 // Update 更新用户信息
-func (*TrainService) Update(form *formvalidate.AdminUserForm) int {
+func (*TrainService) Update(form *formvalidate.TrainForm) int {
 	o := orm.NewOrm()
-	adminUser := models.AdminUser{Id: form.Id}
-	if o.Read(&adminUser) == nil {
-		adminUser.Username = form.Username
-		adminUser.Nickname = form.Nickname
-		adminUser.Role = form.Role
-		adminUser.Status = int8(form.Status)
-		if adminUser.Password != form.Password {
-			newPasswordForHash, err := utils.PasswordHash(form.Password)
-			if err == nil {
-				adminUser.Password = base64.StdEncoding.EncodeToString([]byte(newPasswordForHash))
-			}
-		}
-		num, err := o.Update(&adminUser)
+	train := models.Train{Id: form.Id}
+	if o.Read(&train) == nil {
+		train.Title = form.Title
+		train.Summary = form.Summary
+		train.PersonInCharge = form.PersonInCharge
+		train.Status = int8(form.Status)
+		train.RegistrationStartedAt = form.RegistrationStartedAt
+		train.RegistrationEndAt = form.RegistrationEndAt
+		num, err := o.Update(&train)
 		if err == nil {
 			return int(num)
 		}
