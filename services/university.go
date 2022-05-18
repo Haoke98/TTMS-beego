@@ -16,24 +16,24 @@ import (
 	"time"
 )
 
-// TrainService 培训计划服务
-type TrainService struct {
+// UniversityService 培训计划服务
+type UniversityService struct {
 	BaseService
 }
 
-// GetAdminUserById 根据id获取一条admin_user数据
-func (*TrainService) GetAdminUserById(id int) *models.Train {
+// GetUniversityById 根据id获取一条admin_user数据
+func (*UniversityService) GetUniversityById(id int) *models.University {
 	o := orm.NewOrm()
-	train := models.Train{Id: id}
-	err := o.Read(&train)
+	obj := models.University{Id: id}
+	err := o.Read(&obj)
 	if err != nil {
 		return nil
 	}
-	return &train
+	return &obj
 }
 
 // AuthCheck 权限检测
-func (*TrainService) AuthCheck(url string, authExcept map[string]interface{}, loginUser *models.AdminUser) bool {
+func (*UniversityService) AuthCheck(url string, authExcept map[string]interface{}, loginUser *models.AdminUser) bool {
 	authURL := loginUser.GetAuthUrl()
 	if utils.KeyInMap(url, authExcept) || utils.KeyInMap(url, authURL) {
 		return true
@@ -42,7 +42,7 @@ func (*TrainService) AuthCheck(url string, authExcept map[string]interface{}, lo
 }
 
 // CheckLogin 用户登录验证
-func (*TrainService) CheckLogin(loginForm formvalidate.LoginForm, ctx *context.Context) (*models.AdminUser, error) {
+func (*UniversityService) CheckLogin(loginForm formvalidate.LoginForm, ctx *context.Context) (*models.AdminUser, error) {
 	var adminUser models.AdminUser
 	o := orm.NewOrm()
 	err := o.QueryTable(new(models.AdminUser)).Filter("username", loginForm.Username).Limit(1).One(&adminUser)
@@ -75,7 +75,7 @@ func (*TrainService) CheckLogin(loginForm formvalidate.LoginForm, ctx *context.C
 }
 
 // GetCount 获取admin_user 总数
-func (*TrainService) GetCount() int {
+func (*UniversityService) GetCount() int {
 	count, err := orm.NewOrm().QueryTable(new(models.AdminUser)).Count()
 	if err != nil {
 		return 0
@@ -84,7 +84,7 @@ func (*TrainService) GetCount() int {
 }
 
 // GetAllAdminUser 获取所有adminuser
-func (*TrainService) GetAllAdminUser() []*models.AdminUser {
+func (*UniversityService) GetAllAdminUser() []*models.AdminUser {
 	var adminUser []*models.AdminUser
 	o := orm.NewOrm().QueryTable(new(models.AdminUser))
 	_, err := o.All(&adminUser)
@@ -95,7 +95,7 @@ func (*TrainService) GetAllAdminUser() []*models.AdminUser {
 }
 
 // UpdateNickName 系统管理-个人资料-修改昵称
-func (*TrainService) UpdateNickName(id int, nickname string) int {
+func (*UniversityService) UpdateNickName(id int, nickname string) int {
 	num, err := orm.NewOrm().QueryTable(new(models.AdminUser)).Filter("id", id).Update(orm.Params{
 		"nickname": nickname,
 	})
@@ -106,7 +106,7 @@ func (*TrainService) UpdateNickName(id int, nickname string) int {
 }
 
 // UpdatePassword 修改密码
-func (*TrainService) UpdatePassword(id int, newPassword string) int {
+func (*UniversityService) UpdatePassword(id int, newPassword string) int {
 	newPasswordForHash, err := utils.PasswordHash(newPassword)
 
 	if err != nil {
@@ -125,7 +125,7 @@ func (*TrainService) UpdatePassword(id int, newPassword string) int {
 }
 
 // UpdateAvatar 系统管理-个人资料-修改头像
-func (*TrainService) UpdateAvatar(id int, avatar string) int {
+func (*UniversityService) UpdateAvatar(id int, avatar string) int {
 	num, err := orm.NewOrm().QueryTable(new(models.AdminUser)).Filter("id", id).Update(orm.Params{
 		"avatar": avatar,
 	})
@@ -135,41 +135,46 @@ func (*TrainService) UpdateAvatar(id int, avatar string) int {
 	return int(num)
 }
 
-// GetPaginateData 通过分页获取adminuser
-func (ts *TrainService) GetPaginateData(listRows int, params url.Values) ([]*models.Train, page.Pagination) {
+// GetPaginateData 通过分页获取培训计划
+func (ts *UniversityService) GetPaginateData(listRows int, params url.Values) ([]*models.University, page.Pagination) {
 	//搜索、查询字段赋值
-	ts.SearchField = append(ts.SearchField, new(models.Train).SearchField()...)
+	ts.SearchField = append(ts.SearchField, new(models.University).SearchField()...)
 
-	var trains []*models.Train
-	o := orm.NewOrm().QueryTable(new(models.Train))
-	_, err := ts.PaginateAndScopeWhere(o, listRows, params).All(&trains)
+	var objs []*models.University
+	o := orm.NewOrm().QueryTable(new(models.University))
+	_, err := ts.PaginateAndScopeWhere(o, listRows, params).All(&objs)
 	if err != nil {
 		return nil, ts.Pagination
 	}
-	return trains, ts.Pagination
+	return objs, ts.Pagination
 }
 
 // IsExistName 名称验重
-func (*TrainService) IsExistName(title string, id int) bool {
+func (*UniversityService) IsExistName(title string, id int) bool {
 	if id == 0 {
-		return orm.NewOrm().QueryTable(new(models.Train)).Filter("title", title).Exist()
+		return orm.NewOrm().QueryTable(new(models.University)).Filter("name", title).Exist()
 	}
-	return orm.NewOrm().QueryTable(new(models.Train)).Filter("title", title).Exclude("id", id).Exist()
+	return orm.NewOrm().QueryTable(new(models.University)).Filter("name", title).Exclude("id", id).Exist()
 }
 
-// Create 新增admin user用户
-func (*TrainService) Create(form *formvalidate.TrainForm) int {
-	train := models.Train{
-		Title:                 form.Title,
-		Summary:               form.Summary,
-		RegistrationStartedAt: form.RegistrationStartedAt,
-		RegistrationEndAt:     form.RegistrationEndAt,
-		PersonInCharge:        form.PersonInCharge,
-		Status:                int8(form.Status),
-		CreatedAt:             time.Now(),
-		UpdatedAt:             time.Now(),
+// IsExistCode 编号验重
+func (*UniversityService) IsExistCode(code string, id int) bool {
+	if id == 0 {
+		return orm.NewOrm().QueryTable(new(models.University)).Filter("code", code).Exist()
 	}
-	id, err := orm.NewOrm().Insert(&train)
+	return orm.NewOrm().QueryTable(new(models.University)).Filter("code", code).Exclude("id", id).Exist()
+}
+
+// Create 新增培训计划
+func (*UniversityService) Create(form *formvalidate.UniversityForm) int {
+	obj := models.University{
+		Name:      form.Name,
+		Code:      form.Code,
+		Badge:     form.Badge,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+	id, err := orm.NewOrm().Insert(&obj)
 
 	if err == nil {
 		return int(id)
@@ -179,18 +184,15 @@ func (*TrainService) Create(form *formvalidate.TrainForm) int {
 	return 0
 }
 
-// Update 更新用户信息
-func (*TrainService) Update(form *formvalidate.TrainForm) int {
+// Update 更新高校信息
+func (*UniversityService) Update(form *formvalidate.UniversityForm) int {
 	o := orm.NewOrm()
-	train := models.Train{Id: form.Id}
-	if o.Read(&train) == nil {
-		train.Title = form.Title
-		train.Summary = form.Summary
-		train.PersonInCharge = form.PersonInCharge
-		train.Status = int8(form.Status)
-		train.RegistrationStartedAt = form.RegistrationStartedAt
-		train.RegistrationEndAt = form.RegistrationEndAt
-		num, err := o.Update(&train)
+	obj := models.University{Id: form.Id}
+	if o.Read(&obj) == nil {
+		obj.Name = form.Name
+		obj.Code = form.Code
+		obj.Badge = form.Badge
+		num, err := o.Update(&obj)
 		if err == nil {
 			return int(num)
 		}
@@ -199,8 +201,8 @@ func (*TrainService) Update(form *formvalidate.TrainForm) int {
 	return 0
 }
 
-// Enable 启用用户
-func (*TrainService) Enable(ids []int) int {
+// Enable 启用培训计划
+func (*UniversityService) Enable(ids []int) int {
 	num, err := orm.NewOrm().QueryTable(new(models.AdminUser)).Filter("id__in", ids).Update(orm.Params{
 		"status": 1,
 	})
@@ -210,8 +212,8 @@ func (*TrainService) Enable(ids []int) int {
 	return 0
 }
 
-// Disable 禁用用户
-func (*TrainService) Disable(ids []int) int {
+// Disable 禁用培训计划
+func (*UniversityService) Disable(ids []int) int {
 	num, err := orm.NewOrm().QueryTable(new(models.AdminUser)).Filter("id__in", ids).Update(orm.Params{
 		"status": 0,
 	})
@@ -221,9 +223,9 @@ func (*TrainService) Disable(ids []int) int {
 	return 0
 }
 
-// Del 删除用户
-func (*TrainService) Del(ids []int) int {
-	count, err := orm.NewOrm().QueryTable(new(models.AdminUser)).Filter("id__in", ids).Delete()
+// Del 删除培训计划
+func (*UniversityService) Del(ids []int) int {
+	count, err := orm.NewOrm().QueryTable(new(models.University)).Filter("id__in", ids).Delete()
 	if err == nil {
 		return int(count)
 	}

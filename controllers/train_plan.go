@@ -14,35 +14,35 @@ import (
 	"strings"
 )
 
-// AdminTrainController  培训计划控制器
-type AdminTrainController struct {
+// TrainPlanController  培训计划控制器
+type TrainPlanController struct {
 	baseController
 }
 
 // Index 用户管理-首页
-func (auc *AdminTrainController) Index() {
-	var trainService services.TrainService
+func (auc *TrainPlanController) Index() {
+	var trainService services.TrainPlanService
 	data, pagination := trainService.GetPaginateData(admin["per_page"].(int), gQueryParams)
 	auc.Data["data"] = data
 	auc.Data["paginate"] = pagination
 
 	auc.Layout = "public/base.html"
-	auc.TplName = "train/index.html"
+	auc.TplName = "train_plan/index.html"
 }
 
 // Add 用户管理-添加界面
-func (auc *AdminTrainController) Add() {
+func (auc *TrainPlanController) Add() {
 	var adminRoleService services.AdminRoleService
 	roles := adminRoleService.GetAllData()
 
 	auc.Data["roles"] = roles
 	auc.Layout = "public/base.html"
-	auc.TplName = "train/add.html"
+	auc.TplName = "train_plan/add.html"
 }
 
 // Create 用户管理-添加界面
-func (auc *AdminTrainController) Create() {
-	var trainForm formvalidate.TrainForm
+func (auc *TrainPlanController) Create() {
+	var trainForm formvalidate.TrainPlanForm
 	if err := auc.ParseForm(&trainForm); err != nil {
 		response.ErrorWithMessage(err.Error(), auc.Ctx)
 	}
@@ -53,7 +53,7 @@ func (auc *AdminTrainController) Create() {
 	}
 
 	//账号验重
-	var trainService services.TrainService
+	var trainService services.TrainPlanService
 	if trainService.IsExistName(strings.TrimSpace(trainForm.Title), 0) {
 		response.ErrorWithMessage("同名培训计划已存在！", auc.Ctx)
 	}
@@ -73,14 +73,14 @@ func (auc *AdminTrainController) Create() {
 }
 
 // Edit 系统管理-用户管理-修改界面
-func (auc *AdminTrainController) Edit() {
+func (auc *TrainPlanController) Edit() {
 	id, _ := auc.GetInt("id", -1)
 	if id <= 0 {
 		response.ErrorWithMessage("Param is error.", auc.Ctx)
 	}
 
 	var (
-		trainService services.TrainService
+		trainService services.TrainPlanService
 	)
 
 	train := trainService.GetAdminUserById(id)
@@ -90,12 +90,12 @@ func (auc *AdminTrainController) Edit() {
 	auc.Data["data"] = train
 
 	auc.Layout = "public/base.html"
-	auc.TplName = "train/edit.html"
+	auc.TplName = "train_plan/edit.html"
 }
 
 // Update 系统管理-用户管理-修改
-func (auc *AdminTrainController) Update() {
-	var trainForm formvalidate.TrainForm
+func (auc *TrainPlanController) Update() {
+	var trainForm formvalidate.TrainPlanForm
 	if err := auc.ParseForm(&trainForm); err != nil {
 		response.ErrorWithMessage(err.Error(), auc.Ctx)
 	}
@@ -111,7 +111,7 @@ func (auc *AdminTrainController) Update() {
 	}
 
 	//账号验重
-	var trainService services.TrainService
+	var trainService services.TrainPlanService
 	if trainService.IsExistName(strings.TrimSpace(trainForm.Title), trainForm.Id) {
 		response.ErrorWithMessage("账号已经存在", auc.Ctx)
 	}
@@ -126,7 +126,7 @@ func (auc *AdminTrainController) Update() {
 }
 
 // Enable 启用
-func (auc *AdminTrainController) Enable() {
+func (auc *TrainPlanController) Enable() {
 	idStr := auc.GetString("id")
 	ids := make([]int, 0)
 	var idArr []int
@@ -156,7 +156,7 @@ func (auc *AdminTrainController) Enable() {
 }
 
 // Disable 禁用
-func (auc *AdminTrainController) Disable() {
+func (auc *TrainPlanController) Disable() {
 	idStr := auc.GetString("id")
 	ids := make([]int, 0)
 	var idArr []int
@@ -186,7 +186,7 @@ func (auc *AdminTrainController) Disable() {
 }
 
 // Del 删除
-func (auc *AdminTrainController) Del() {
+func (auc *TrainPlanController) Del() {
 	idStr := auc.GetString("id")
 	ids := make([]int, 0)
 	var idArr []int
@@ -225,13 +225,13 @@ func (auc *AdminTrainController) Del() {
 }
 
 // Profile 系统管理-个人资料
-func (auc *AdminTrainController) Profile() {
+func (auc *TrainPlanController) Profile() {
 	auc.Layout = "public/base.html"
 	auc.TplName = "admin_user/profile.html"
 }
 
 // UpdateNickName 系统管理-个人资料-修改昵称
-func (auc *AdminTrainController) UpdateNickName() {
+func (auc *TrainPlanController) UpdateNickName() {
 	id, err := auc.GetInt("id")
 	nickname := strings.TrimSpace(auc.GetString("nickname"))
 
@@ -258,7 +258,7 @@ func (auc *AdminTrainController) UpdateNickName() {
 }
 
 // UpdatePassword 系统管理-个人资料-修改密码
-func (auc *AdminTrainController) UpdatePassword() {
+func (auc *TrainPlanController) UpdatePassword() {
 	id, err := auc.GetInt("id")
 	password := auc.GetString("password")
 	newPassword := auc.GetString("new_password")
@@ -301,7 +301,7 @@ func (auc *AdminTrainController) UpdatePassword() {
 }
 
 // UpdateAvatar 系统管理-个人资料-修改头像
-func (auc *AdminTrainController) UpdateAvatar() {
+func (auc *TrainPlanController) UpdateAvatar() {
 	_, _, err := auc.GetFile("avatar")
 	if err != nil {
 		response.ErrorWithMessage("上传头像错误"+err.Error(), auc.Ctx)

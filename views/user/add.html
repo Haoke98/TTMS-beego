@@ -19,7 +19,8 @@
                         <div class="form-group">
                             <label for="avatar" class="col-sm-2 control-label">头像</label>
                             <div class="col-sm-10 col-md-4">
-                                <input id="avatar" name="avatar" placeholder="请上传头像" type="file" class="form-control field-image" >
+                                <input id="avatar" name="avatar" placeholder="请上传头像" type="file"
+                                       class="form-control field-image">
                             </div>
                         </div>
                         <script>
@@ -34,9 +35,6 @@
                                 allowedFileTypes: ['image'],
                                 maxFileSize: 10240,
                             });
-                        </script>
-                        <script>
-                            $('#user_level_id').select2();
                         </script>
                         <div class="form-group">
                             <label for="username" class="col-sm-2 control-label">用户名</label>
@@ -141,9 +139,6 @@
     /** 表单验证 **/
     $('#dataForm').validate({
         rules: {
-            'user_level_id': {
-                required: true,
-            },
             'username': {
                 required: true,
             },
@@ -162,9 +157,6 @@
 
         },
         messages: {
-            'user_level_id': {
-                required: "用户等级不能为空",
-            },
             'username': {
                 required: "用户名不能为空",
             },

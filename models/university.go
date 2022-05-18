@@ -8,58 +8,55 @@ import (
 	"time"
 )
 
-// Train struct
-type Train struct {
-	Id                    int       `orm:"column(id);auto;size(11)" description:"表ID" json:"id"`
-	CreatedAt             time.Time `orm:"column(createdAt);" description:"创建时间" json:"createdAt"`
-	UpdatedAt             time.Time `orm:"column(updatedAt);" description:"创建时间" json:"updatedAt"`
-	Title                 string    `orm:"column(title);size(255)" description:"用户名" json:"title"`
-	Summary               string    `orm:"column(summary);type(text)" description:"密码" json:"summary"`
-	RegistrationStartedAt time.Time `orm:"column(registrationStartedAt);" description:"报名开始时间" json:"registrationStartedAt"`
-	RegistrationEndAt     time.Time `orm:"column(registrationEndAt);" description:"报名结束时间" json:"registrationEndAt"`
-	PersonInCharge        string    `orm:"column(personInCharge);" description:"负责人" json:"personInCharge"`
-	Status                int8      `orm:"column(status);size(1)" description:"是否启用 0：否 1：是" json:"status"`
-	DeleteTime            int       `orm:"column(delete_time);size(10);default(0)" description:"删除时间" json:"delete_time"`
+// University struct 高校数据模型
+type University struct {
+	Id         int       `orm:"column(id);auto;size(11)" description:"表ID" json:"id"`
+	CreatedAt  time.Time `orm:"column(createdAt);" description:"创建时间" json:"createdAt"`
+	UpdatedAt  time.Time `orm:"column(updatedAt);" description:"创建时间" json:"updatedAt"`
+	Name       string    `orm:"column(name);size(255)" description:"名称" json:"name"`
+	Code       string    `orm:"column(code);size(255)" description:"编号" json:"code"`
+	Badge      string    `orm:"column(badge);size(255)" description:"校徽" json:"badge"`
+	DeleteTime int       `orm:"column(delete_time);size(10);default(0)" description:"删除时间" json:"delete_time"`
 }
 
 //在init中注册定义的model
 func init() {
-	orm.RegisterModel(new(Train))
+	orm.RegisterModel(new(University))
 }
 
 // TableName 自定义table 名称
-func (*Train) TableName() string {
-	return "train"
+func (*University) TableName() string {
+	return "university"
 }
 
 // SearchField 定义模型的可搜索字段
-func (*Train) SearchField() []string {
-	return []string{"nickname", "username"}
+func (*University) SearchField() []string {
+	return []string{"name", "code"}
 }
 
 // NoDeletionId 禁止删除的数据id
-func (*Train) NoDeletionId() []int {
+func (*University) NoDeletionId() []int {
 	return []int{}
 }
 
 // WhereField 定义模型可作为条件的字段
-func (*Train) WhereField() []string {
+func (*University) WhereField() []string {
 	return []string{}
 }
 
 // TimeField 定义可做为时间范围查询的字段
-func (*Train) TimeField() []string {
+func (*University) TimeField() []string {
 	return []string{}
 }
 
 // GetSignStrByTrain 获取加密字符串，用在登录的时候加密处理
-func (Train *Train) GetSignStrByTrain(ctx *context.Context) string {
+func (Train *University) GetSignStrByTrain(ctx *context.Context) string {
 	ua := ctx.Input.Header("user-agent")
-	return fmt.Sprintf("%x", sha1.Sum([]byte(fmt.Sprintf("%d%s%s", Train.Id, Train.Title, ua))))
+	return fmt.Sprintf("%x", sha1.Sum([]byte(fmt.Sprintf("%d%s%s", Train.Id, Train.Name, ua))))
 }
 
 // GetAuthUrl 获取已授权url
-func (Train *Train) GetAuthUrl() map[string]interface{} {
+func (Train *University) GetAuthUrl() map[string]interface{} {
 	//FIXME:var (
 	//	urlArr orm.ParamsList
 	//)
@@ -68,7 +65,7 @@ func (Train *Train) GetAuthUrl() map[string]interface{} {
 	//o := orm.NewOrm()
 	//qs := o.QueryTable(new(AdminRole))
 
-	//_, err := qs.Filter("id__in", strings.Split(Train.Role, ",")).Filter("status", 1).ValuesFlat(&urlArr, "url")
+	//_, err := qs.Filter("id__in", strings.Split(University.Role, ",")).Filter("status", 1).ValuesFlat(&urlArr, "url")
 	//if err == nil {
 	//	urlIDStr := ""
 	//	for k, row := range urlArr {
@@ -104,7 +101,7 @@ func (Train *Train) GetAuthUrl() map[string]interface{} {
 }
 
 // GetShowMenu 获取当前用户已授权的显示菜单
-func (Train *Train) GetShowMenu() map[int]orm.Params {
+func (Train *University) GetShowMenu() map[int]orm.Params {
 	var maps []orm.Params
 	returnMaps := make(map[int]orm.Params)
 	o := orm.NewOrm()
@@ -121,7 +118,7 @@ func (Train *Train) GetShowMenu() map[int]orm.Params {
 	}
 
 	//FIXME:var list orm.ParamsList
-	//_, err := o.QueryTable(new(AdminRole)).Filter("id__in", strings.Split(Train.Role, ",")).Filter("status", 1).ValuesFlat(&list, "url")
+	//_, err := o.QueryTable(new(AdminRole)).Filter("id__in", strings.Split(University.Role, ",")).Filter("status", 1).ValuesFlat(&list, "url")
 	//if err == nil {
 	//	var urlIDArr []string
 	//	for _, m := range list {
@@ -141,8 +138,8 @@ func (Train *Train) GetShowMenu() map[int]orm.Params {
 }
 
 // GetRoleText 用户角色名称
-func (Train *Train) GetRoleText() map[int]*AdminRole {
-	//FIXME:roleIDArr := strings.Split(Train.Role, ",")
+func (Train *University) GetRoleText() map[int]*AdminRole {
+	//FIXME:roleIDArr := strings.Split(University.Role, ",")
 	var adminRole []*AdminRole
 	//_, err := orm.NewOrm().QueryTable(new(AdminRole)).Filter("id__in", roleIDArr, "id", "name").All(&adminRole)
 	//if err != nil {
@@ -156,9 +153,9 @@ func (Train *Train) GetRoleText() map[int]*AdminRole {
 }
 
 // GetTrain 获取所有用户
-func (*Train) GetTrain() []*Train {
-	var Trains []*Train
-	_, err := orm.NewOrm().QueryTable(new(Train)).All(&Trains)
+func (*University) GetTrain() []*University {
+	var Trains []*University
+	_, err := orm.NewOrm().QueryTable(new(University)).All(&Trains)
 	if err == nil {
 		return Trains
 	}

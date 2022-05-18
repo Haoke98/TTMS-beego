@@ -22,10 +22,10 @@ type UserForm struct {
 // Messages 自定义验证返回消息
 func (f UserForm) Messages() map[string]string {
 	return validate.MS{
-		"Title.required":          "用户名不能为空.",
+		"Name.required":           "用户名不能为空.",
 		"Mobile.required":         "手机号不能为空.",
 		"FullName.required":       "姓名不能为空.",
 		"FullNamePinYin.required": "姓名（拼音）不能为空",
-		"Summary.required":        "密码不能为空.",
+		"Code.required":           "密码不能为空.",
 	}
 }

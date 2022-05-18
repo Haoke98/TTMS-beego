@@ -149,11 +149,24 @@ func init() {
 		//用户管理-导出
 		web.NSRouter("/user/export", &controllers.UserController{}, "get:Export"),
 
-		web.NSRouter("/train-management/index", &controllers.AdminTrainController{}, "get:Index"),
-		web.NSRouter("/train-management/add", &controllers.AdminTrainController{}, "get:Add"),
-		web.NSRouter("/train-management/create", &controllers.AdminTrainController{}, "post:Create"),
-		web.NSRouter("/train-management/edit", &controllers.AdminTrainController{}, "get:Edit"),
-		web.NSRouter("/train-management/update", &controllers.AdminTrainController{}, "post:Update"),
+		web.NSRouter("/train-management/index", &controllers.TrainPlanController{}, "get:Index"),
+		web.NSRouter("/train-management/add", &controllers.TrainPlanController{}, "get:Add"),
+		web.NSRouter("/train-management/create", &controllers.TrainPlanController{}, "post:Create"),
+		web.NSRouter("/train-management/edit", &controllers.TrainPlanController{}, "get:Edit"),
+		web.NSRouter("/train-management/update", &controllers.TrainPlanController{}, "post:Update"),
+
+		web.NSRouter("/train-course/index", &controllers.TrainCourseController{}, "get:Index"),
+		web.NSRouter("/train-course/add", &controllers.TrainCourseController{}, "get:Add"),
+		web.NSRouter("/train-course/create", &controllers.TrainCourseController{}, "post:Create"),
+		web.NSRouter("/train-course/edit", &controllers.TrainCourseController{}, "get:Edit"),
+		web.NSRouter("/train-course/update", &controllers.TrainCourseController{}, "post:Update"),
+
+		web.NSRouter("/university/index", &controllers.University{}, "get:Index"),
+		web.NSRouter("/university/add", &controllers.University{}, "get:Add"),
+		web.NSRouter("/university/create", &controllers.University{}, "post:Create"),
+		web.NSRouter("/university/edit", &controllers.University{}, "get:Edit"),
+		web.NSRouter("/university/update", &controllers.University{}, "post:Update"),
+		web.NSRouter("/university/del", &controllers.University{}, "post:Del"),
 	)
 
 	web.AddNamespace(admin)

@@ -5,8 +5,8 @@ import (
 	"time"
 )
 
-// TrainForm 培训计划表单
-type TrainForm struct {
+// TrainCourseForm 培训计划表单
+type TrainCourseForm struct {
 	Id                    int       `form:"id"`
 	Title                 string    `form:"title" validate:"required"`
 	Summary               string    `form:"summary" validate:"required"`
@@ -18,10 +18,10 @@ type TrainForm struct {
 }
 
 // Messages 自定义验证返回消息
-func (f TrainForm) Messages() map[string]string {
+func (f TrainCourseForm) Messages() map[string]string {
 	return validate.MS{
-		"Title.required":                 "请填写标题.",
-		"Summary.required":               "请填简介.",
+		"Name.required":                  "请填写标题.",
+		"Code.required":                  "请填简介.",
 		"RegistrationStartedAt.required": "请选择报名开始时间.",
 		"RegistrationEndAt.required":     "请选择报名结束时间.",
 		"PersonInCharge.required":        "请填写负责人姓名.",

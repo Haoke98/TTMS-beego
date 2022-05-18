@@ -1,6 +1,18 @@
 # 师资培训管理系统
 
 #### 基于beego 2.0.1 框架和AdminLte前端框架开发的高性能教师资格培训管理系统，在beego框架的基础上，封装了后台系统的分页功能，excel数据导出功能等丰富常用的扩展，基于MVC模式，html界面随心定义，相较于某些后台复杂代码生成的前端html元素，使用原生的html原生作为前端显示，更加的灵活自由。欢迎大家使用。
+## 依赖介绍
+### UI框架
+AdminLTE2
+
+[Github源码地址](https://github.com/ColorlibHQ/AdminLTE/tree/v2)
+
+[文档地址](https://github.com/ColorlibHQ/AdminLTE/tree/v2)
+
+### ICON图标
+[FontAwesome4](https://fontawesome.com/v4/)
+
+[本项目可用图标搜索地址](https://fontawesome.com/v4/icons/)
 
 ## 安装
 
@@ -43,3 +55,8 @@
 ## 联系我
 
 邮箱：1903249375@qq.com
+
+## 相关链接
+[FontAwesome官网各个版本](https://fontawesome.com/versions)
+
+[AdminLTE官网地址](https://adminlte.io/)

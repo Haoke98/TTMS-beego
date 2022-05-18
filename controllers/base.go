@@ -105,7 +105,7 @@ func (bc *baseController) Prepare() {
 		"short_name":      global.BA_CONFIG.Base.ShortName,
 		"link":            global.BA_CONFIG.Base.Link,
 		"per_page":        perPage,
-		"per_page_config": []int{10, 20, 30, 50, 100},
+		"per_page_config": []int{6, 8, 10, 20, 30, 50, 100},
 		"title":           title,
 	}
 	bc.Data["admin"] = admin

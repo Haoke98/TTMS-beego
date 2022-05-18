@@ -1,0 +1,152 @@
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <!-- 表单头部 -->
+                <div class="box-header with-border">
+                    <div class="btn-group">
+                        <a class="btn flat btn-sm btn-default BackButton">
+                            <i class="fa fa-arrow-left"></i>
+                            返回
+                        </a>
+                    </div>
+                    <h2>新增培训计划：</h2>
+                </div>
+                <form id="dataForm" class="form-horizontal dataForm" action="/admin/train-management/create"
+                      method="post"
+                      enctype="multipart/form-data">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="title" class="col-sm-2 control-label">标题</label>
+                            <div class="col-sm-10 col-md-4">
+                                <input maxlength="50" class="form-control" id="title" placeholder="请给本次培训计划起个标题"
+                                       name="title" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="personInCharge" class="col-sm-2 control-label">负责人姓名</label>
+                            <div class="col-sm-10 col-md-3">
+                                <input maxlength="50" class="form-control" id="personInCharge"
+                                       placeholder="此处请填写计划负责人或者你本人的姓名"
+                                       name="personInCharge" value="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registrationStartedAt" class="col-sm-2 control-label">报名开始时间</label>
+                            <div class="col-sm-10 col-md-4">
+                                <input type="datetime-local" id="registrationStartedAt" name="registrationStartedAt">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registrationEndAt" class="col-sm-2 control-label">报名结束时间</label>
+                            <div class="col-sm-10 col-md-4">
+                                <input type="datetime-local" id="registrationEndAt" name="registrationEndAt">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status" class="col-sm-2 control-label">启用状态</label>
+                            <div class="col-sm-10 col-md-4">
+                                <input class="input-switch" id="status" value="1" checked type="checkbox"/>
+                                <input class="switch field-switch" name="status" value="1" hidden/>
+                            </div>
+                        </div>
+                        <script>
+                            $('#status').bootstrapSwitch({
+                                onText: "是",
+                                offText: "否",
+                                onColor: "success",
+                                offColor: "danger",
+                                onSwitchChange: function (event, state) {
+                                    $(event.target).closest('.bootstrap-switch').next().val(state ? '1' : '0').change();
+                                }
+                            });
+                        </script>
+                        <div class="form-group">
+                            <label for="summary" class="col-sm-2 control-label">简介</label>
+                            <div class="col-sm-10 col-md-10">
+                                <script id="summary" name="summary" type="text/plain">
+                                </script>
+                            </div>
+                        </div>
+                        <script>
+                            UE.delEditor('summary');
+                            var description = UE.getEditor('summary', {
+                                serverUrl: UEServer
+                            });
+                        </script>
+                        <a data-url="/admin/university/add" data-confirm="2" data-type="2"
+                           class="btn btn-default btn-xs AjaxButton" data-title="日志详情" title="查看详情"
+                           data-toggle="tooltip">
+                            <i class="fa fa-plus-square-o" aria-hidden="true"></i>新增参与高校
+                        </a>
+
+                    </div>
+
+
+                    <!--表单底部-->
+                    <div class="box-footer">
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-10 col-md-4">
+                            <div class="btn-group pull-right">
+                                <label class="createContinue">
+                                    <input type="checkbox" value="1" id="_create" name="_create"
+                                           title="继续添加数据">继续添加</label>
+                            </div>
+                            <div class="btn-group">
+                                <button type="submit" class="btn flat btn-info dataFormSubmit">
+                                    保存
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="reset" class="btn flat btn-default dataFormReset">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    $("#dataForm").validate({
+        rules: {
+            nickname: {
+                required: true,
+                minlength: 2
+            },
+            username: {
+                required: true,
+                minlength: 2
+            },
+            password: {
+                required: true,
+                minlength: 6
+            },
+        },
+        messages: {
+            nickname: {
+                required: "请输入昵称",
+                minlength: "名称长度不能小于2"
+            },
+            username: {
+                required: "请输入账号",
+                minlength: "用户名长度不能小于2"
+            },
+            password: {
+                required: "请输入密码",
+                minlength: "密码长度不能小于6"
+            },
+        },
+
+    });
+</script>
+
