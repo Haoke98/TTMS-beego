@@ -64,13 +64,13 @@ func (pagination *Pagination) Paginate(seter orm.QuerySeter, listRows int, param
 	pagination.HasMore = pagination.CurrentPage < pagination.LastPage
 
 	//放到最后执行，前面需要赋值
-	pagination.BootStrapRenderLink = pagination.render()
+	pagination.BootStrapRenderLink = pagination.Render()
 
 	return seter.Limit(pagination.ListRows, (pagination.CurrentPage-1)*pagination.ListRows)
 }
 
 //渲染分页html
-func (pagination *Pagination) render() string {
+func (pagination *Pagination) Render() string {
 	if pagination.hasPages() {
 		return fmt.Sprintf("<ul class=\"pagination pagination-sm no-margin pull-right\">%s %s %s</ul>",
 			pagination.getPreviousButton(),

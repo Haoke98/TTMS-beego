@@ -14,13 +14,13 @@ import (
 	"strings"
 )
 
-// University  高级院校控制器
-type University struct {
+// UniversityController  高级院校控制器
+type UniversityController struct {
 	baseController
 }
 
 // Index 用户管理-首页
-func (auc *University) Index() {
+func (auc *UniversityController) Index() {
 	var service services.UniversityService
 	data, pagination := service.GetPaginateData(admin["per_page"].(int), gQueryParams)
 	auc.Data["data"] = data
@@ -31,7 +31,7 @@ func (auc *University) Index() {
 }
 
 // Add 用户管理-添加界面
-func (auc *University) Add() {
+func (auc *UniversityController) Add() {
 	var adminRoleService services.AdminRoleService
 	roles := adminRoleService.GetAllData()
 
@@ -41,7 +41,7 @@ func (auc *University) Add() {
 }
 
 // Create 用户管理-添加界面
-func (auc *University) Create() {
+func (auc *UniversityController) Create() {
 	var form formvalidate.UniversityForm
 	if err := auc.ParseForm(&form); err != nil {
 		response.ErrorWithMessage(err.Error(), auc.Ctx)
@@ -86,7 +86,7 @@ func (auc *University) Create() {
 }
 
 // Edit 系统管理-用户管理-修改界面
-func (auc *University) Edit() {
+func (auc *UniversityController) Edit() {
 	id, _ := auc.GetInt("id", -1)
 	if id <= 0 {
 		response.ErrorWithMessage("Param is error.", auc.Ctx)
@@ -107,7 +107,7 @@ func (auc *University) Edit() {
 }
 
 // Update 高校管理-修改-更新
-func (auc *University) Update() {
+func (auc *UniversityController) Update() {
 	var form formvalidate.UniversityForm
 	if err := auc.ParseForm(&form); err != nil {
 		response.ErrorWithMessage(err.Error(), auc.Ctx)
@@ -152,7 +152,7 @@ func (auc *University) Update() {
 }
 
 // Del 删除
-func (auc *University) Del() {
+func (auc *UniversityController) Del() {
 	idStr := auc.GetString("id")
 	ids := make([]int, 0)
 	var idArr []int
@@ -191,13 +191,13 @@ func (auc *University) Del() {
 }
 
 // Profile 系统管理-个人资料
-func (auc *University) Profile() {
+func (auc *UniversityController) Profile() {
 	auc.Layout = "public/base.html"
 	auc.TplName = "admin_user/profile.html"
 }
 
 // UpdateNickName 系统管理-个人资料-修改昵称
-func (auc *University) UpdateNickName() {
+func (auc *UniversityController) UpdateNickName() {
 	id, err := auc.GetInt("id")
 	nickname := strings.TrimSpace(auc.GetString("nickname"))
 
@@ -224,7 +224,7 @@ func (auc *University) UpdateNickName() {
 }
 
 // UpdatePassword 系统管理-个人资料-修改密码
-func (auc *University) UpdatePassword() {
+func (auc *UniversityController) UpdatePassword() {
 	id, err := auc.GetInt("id")
 	password := auc.GetString("password")
 	newPassword := auc.GetString("new_password")
@@ -267,7 +267,7 @@ func (auc *University) UpdatePassword() {
 }
 
 // UpdateAvatar 系统管理-个人资料-修改头像
-func (auc *University) UpdateAvatar() {
+func (auc *UniversityController) UpdateAvatar() {
 	_, _, err := auc.GetFile("avatar")
 	if err != nil {
 		response.ErrorWithMessage("上传头像错误"+err.Error(), auc.Ctx)

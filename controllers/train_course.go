@@ -21,8 +21,8 @@ type TrainCourseController struct {
 
 // Index 用户管理-首页
 func (auc *TrainCourseController) Index() {
-	var trainService services.TrainPlanService
-	data, pagination := trainService.GetPaginateData(admin["per_page"].(int), gQueryParams)
+	var service services.TrainCourseService
+	data, pagination := service.GetPaginateData(admin["per_page"].(int), gQueryParams)
 	auc.Data["data"] = data
 	auc.Data["paginate"] = pagination
 
@@ -53,12 +53,12 @@ func (auc *TrainCourseController) Create() {
 	}
 
 	//账号验重
-	var trainService services.TrainPlanService
-	if trainService.IsExistName(strings.TrimSpace(trainForm.Title), 0) {
+	var service services.TrainCourseService
+	if service.IsExistName(strings.TrimSpace(trainForm.Title), 0) {
 		response.ErrorWithMessage("同名培训计划已存在！", auc.Ctx)
 	}
 
-	insertID := trainService.Create(&trainForm)
+	insertID := service.Create(&trainForm)
 
 	url := global.URL_BACK
 	if trainForm.IsCreate == 1 {

@@ -21,7 +21,7 @@ type UniversityService struct {
 	BaseService
 }
 
-// GetUniversityById 根据id获取一条admin_user数据
+// GetUniversityById 根据id获取一条高校数据
 func (*UniversityService) GetUniversityById(id int) *models.University {
 	o := orm.NewOrm()
 	obj := models.University{Id: id}

@@ -32,12 +32,17 @@ func (auc *TrainPlanController) Index() {
 
 // Add 用户管理-添加界面
 func (auc *TrainPlanController) Add() {
-	var adminRoleService services.AdminRoleService
-	roles := adminRoleService.GetAllData()
+	var (
+		adminRoleService services.AdminRoleService
+		trainPlanService services.TrainPlanService
+	)
 
+	roles := adminRoleService.GetAllData()
+	tempPlan := trainPlanService.GetTempTrainPlan()
 	auc.Data["roles"] = roles
+	auc.Data["data"] = tempPlan
 	auc.Layout = "public/base.html"
-	auc.TplName = "train_plan/add.html"
+	auc.TplName = "train_plan/edit.html"
 }
 
 // Create 用户管理-添加界面
@@ -58,7 +63,7 @@ func (auc *TrainPlanController) Create() {
 		response.ErrorWithMessage("同名培训计划已存在！", auc.Ctx)
 	}
 
-	insertID := trainService.Create(&trainForm)
+	insertID, _ := trainService.Create(&trainForm)
 
 	url := global.URL_BACK
 	if trainForm.IsCreate == 1 {

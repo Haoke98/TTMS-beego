@@ -161,12 +161,14 @@ func init() {
 		web.NSRouter("/train-course/edit", &controllers.TrainCourseController{}, "get:Edit"),
 		web.NSRouter("/train-course/update", &controllers.TrainCourseController{}, "post:Update"),
 
-		web.NSRouter("/university/index", &controllers.University{}, "get:Index"),
-		web.NSRouter("/university/add", &controllers.University{}, "get:Add"),
-		web.NSRouter("/university/create", &controllers.University{}, "post:Create"),
-		web.NSRouter("/university/edit", &controllers.University{}, "get:Edit"),
-		web.NSRouter("/university/update", &controllers.University{}, "post:Update"),
-		web.NSRouter("/university/del", &controllers.University{}, "post:Del"),
+		web.NSRouter("/university/index", &controllers.UniversityController{}, "get:Index"),
+		web.NSRouter("/university/add", &controllers.UniversityController{}, "get:Add"),
+		web.NSRouter("/university/create", &controllers.UniversityController{}, "post:Create"),
+		web.NSRouter("/university/edit", &controllers.UniversityController{}, "get:Edit"),
+		web.NSRouter("/university/update", &controllers.UniversityController{}, "post:Update"),
+		web.NSRouter("/university/del", &controllers.UniversityController{}, "post:Del"),
+
+		web.NSRouter("/quota/index", &controllers.QuotaController{}, "get:Index"),
 	)
 
 	web.AddNamespace(admin)

@@ -82,12 +82,12 @@
                                        placeholder="选择/取消">
                             </td>
                             <td>{{$item.Id}}</td>
-                            <td>{{$item.CreatedAt}}</td>
-                            <td>{{$item.UpdatedAt}}</td>
+                            <td>{{$item.CreatedAt.Format "2006-01-02T15:04"}}</td>
+                            <td>{{$item.UpdatedAt.Format "2006-01-02T15:04"}}</td>
                             <td>{{$item.Title}}</td>
                             <td>{{$item.PersonInCharge}}</td>
-                            <td>{{$item.RegistrationStartedAt}}</td>
-                            <td>{{$item.RegistrationEndAt}}</td>
+                            <td>{{$item.RegistrationStartedAt.Format "2006-01-02T15:04"}}</td>
+                            <td>{{$item.RegistrationEndAt.Format "2006-01-02T15:04"}}</td>
                             <td>{{if eq 1 $item.Status}} <span class="label label-success">是</span> {{else}} <span class="label label-warning">否</span> {{end}}</td>
                             <td class="td-do">
                                 <a href="/admin/train-management/edit?id={{$item.Id}}"
@@ -114,6 +114,11 @@
                                     <i class="fa fa-circle"></i>
                                 </a>
                                 {{end}}
+                                <a data-url="/admin/quota/index" data-confirm="2" data-type="2" data-id="{{$item.Id}}"
+                                   class="btn btn-default btn-xs AjaxButton" data-title="管理报名名额" title="点击打开管理面板"
+                                   data-toggle="tooltip">
+                                    管理报名申请表
+                                </a>
                             </td>
                         </tr>
                         {{end}}

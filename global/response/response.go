@@ -2,6 +2,7 @@ package response
 
 import (
 	"beego-admin/global"
+	"fmt"
 	beego "github.com/beego/beego/v2/adapter"
 	"github.com/beego/beego/v2/server/web/context"
 	"net/http"
@@ -76,16 +77,19 @@ func SuccessWithDetailed(msg string, url string, data interface{}, wait int, hea
 
 // Error 失败、普通返回
 func Error(ctx *context.Context) {
+	fmt.Printf("%c[1;40;31m%s%c[0m\r", 0x1B, "操作失败", 0x1B)
 	Result(ERROR, "操作失败", "", global.URL_CURRENT, 0, map[string]string{}, ctx)
 }
 
 // ErrorWithMessage 失败、返回自定义信息
 func ErrorWithMessage(msg string, ctx *context.Context) {
+	fmt.Printf("%c[1;40;31m%s%c[0m\r", 0x1B, msg, 0x1B)
 	Result(ERROR, msg, "", global.URL_CURRENT, 0, map[string]string{}, ctx)
 }
 
 // ErrorWithMessageAndUrl 失败、返回自定义信息和url
 func ErrorWithMessageAndUrl(msg string, url string, ctx *context.Context) {
+	fmt.Printf("%c[1;40;31m%s%c[0m\r", 0x1B, msg, 0x1B)
 	Result(ERROR, msg, "", url, 0, map[string]string{}, ctx)
 }
 

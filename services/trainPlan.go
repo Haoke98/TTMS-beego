@@ -32,6 +32,28 @@ func (*TrainPlanService) GetAdminUserById(id int) *models.TrainPlan {
 	return &train
 }
 
+func (s *TrainPlanService) GetTempTrainPlan() *models.TrainPlan {
+	var tempFrom = formvalidate.TrainPlanForm{
+		Title:                 "",
+		RegistrationStartedAt: time.Now(),
+		RegistrationEndAt:     time.Now(),
+		Status:                3,
+	}
+	o := orm.NewOrm()
+	plan := models.TrainPlan{Status: 3}
+	err := o.QueryTable(new(models.TrainPlan)).Filter("Status", 3).One(&plan)
+	if err != nil {
+		insertID, tempPlan := s.Create(&tempFrom)
+		fmt.Printf("[indertID:%+v, tempPlan.ID:%+v]", insertID, tempPlan.Id)
+		return &plan
+	} else {
+		plan.Title = tempFrom.Title
+		plan.RegistrationStartedAt = tempFrom.RegistrationStartedAt
+		plan.RegistrationEndAt = tempFrom.RegistrationEndAt
+		return &plan
+	}
+}
+
 // AuthCheck 权限检测
 func (*TrainPlanService) AuthCheck(url string, authExcept map[string]interface{}, loginUser *models.AdminUser) bool {
 	authURL := loginUser.GetAuthUrl()
@@ -142,7 +164,7 @@ func (ts *TrainPlanService) GetPaginateData(listRows int, params url.Values) ([]
 
 	var trains []*models.TrainPlan
 	o := orm.NewOrm().QueryTable(new(models.TrainPlan))
-	_, err := ts.PaginateAndScopeWhere(o, listRows, params).All(&trains)
+	_, err := ts.PaginateAndScopeWhere(o, listRows, params).Exclude("status", 3).All(&trains)
 	if err != nil {
 		return nil, ts.Pagination
 	}
@@ -158,8 +180,8 @@ func (*TrainPlanService) IsExistName(name string, id int) bool {
 }
 
 // Create 新增培训计划
-func (*TrainPlanService) Create(form *formvalidate.TrainPlanForm) int {
-	train := models.TrainPlan{
+func (*TrainPlanService) Create(form *formvalidate.TrainPlanForm) (int, models.TrainPlan) {
+	trainPlan := models.TrainPlan{
 		Title:                 form.Title,
 		Summary:               form.Summary,
 		RegistrationStartedAt: form.RegistrationStartedAt,
@@ -169,14 +191,14 @@ func (*TrainPlanService) Create(form *formvalidate.TrainPlanForm) int {
 		CreatedAt:             time.Now(),
 		UpdatedAt:             time.Now(),
 	}
-	id, err := orm.NewOrm().Insert(&train)
+	id, err := orm.NewOrm().Insert(&trainPlan)
 
 	if err == nil {
-		return int(id)
+		return int(id), trainPlan
 	} else {
 		fmt.Println(err)
 	}
-	return 0
+	return 0, trainPlan
 }
 
 // Update 更新培训计划
