@@ -8,58 +8,65 @@ import (
 	"time"
 )
 
-// TrainPlan struct
-type TrainPlan struct {
-	Id                    int       `orm:"column(id);auto;size(11)" description:"表ID" json:"id"`
-	CreatedAt             time.Time `orm:"column(createdAt);" description:"创建时间" json:"createdAt"`
-	UpdatedAt             time.Time `orm:"column(updatedAt);" description:"创建时间" json:"updatedAt"`
-	Title                 string    `orm:"column(title);size(255)" description:"用户名" json:"title"`
-	Summary               string    `orm:"column(summary);type(text)" description:"密码" json:"summary"`
-	RegistrationStartedAt time.Time `orm:"column(registrationStartedAt);" description:"报名开始时间" json:"registrationStartedAt"`
-	RegistrationEndAt     time.Time `orm:"column(registrationEndAt);" description:"报名结束时间" json:"registrationEndAt"`
-	PersonInCharge        string    `orm:"column(personInCharge);" description:"负责人" json:"personInCharge"`
-	Status                int8      `orm:"column(status);size(1)" description:"是否启用 0：否 1：是" json:"status"`
-	DeleteTime            int       `orm:"column(delete_time);size(10);default(0)" description:"删除时间" json:"delete_time"`
+// Petition struct 培训计划报名表
+type Petition struct {
+	Id           int       `orm:"column(id);auto;size(11)" description:"表ID" json:"id"`
+	CreatedAt    time.Time `orm:"column(createdAt);" description:"创建时间" json:"createdAt"`
+	UpdatedAt    time.Time `orm:"column(updatedAt);" description:"创建时间" json:"updatedAt"`
+	UserId       int       `orm:"column(user_id);size(11)" description:"用户ID" json:"userId"`
+	PlanId       int       `orm:"column(plan_id);size(11)" description:"培训计划ID" json:"planId"`
+	UniversityId int       `orm:"column(university_id);size(11)" description:"高校ID" json:"universityId"`
+	Name         string    `orm:"column(name);size(100)" description:"姓名" json:"name"`
+	NamePY       string    `orm:"column(namePY);size(100)" description:"姓名（拼音）" json:"namePY"`
+	IdCardNum    string    `orm:"column(idCardNum);" description:"身份证号" json:"IdCardNum"`
+	IdCardFront  string    `orm:"column(idCardFront);size(255);" description:"身份证正面" json:"idCardFront"`
+	IdCardBack   string    `orm:"column(idCardBack);size(255);" description:"身份证反面" json:"idCardBack"`
+	IdCardComb   string    `orm:"column(idCardComb);size(255);" description:"身份证和人合一" json:"idCardComb"`
+	Tel          string    `orm:"column(tel);size(50)" description:"联系方式" json:"tel"`
+	Email        string    `orm:"column(email);size(50)" description:"电子邮箱" json:"email"`
+	Remark       string    `orm:"column(remark);type(text)" description:"备注" json:"remark"`
+	Status       int8      `orm:"column(status);size(1)" description:"申请状态 0：待通过 1：通过 2：拒绝" json:"status"`
+	DeletedAt    time.Time `orm:"column(deleteAt)" description:"删除时间" json:"delete_time"`
 }
 
 //在init中注册定义的model
 func init() {
-	orm.RegisterModel(new(TrainPlan))
+	orm.RegisterModel(new(Petition))
 }
 
 // TableName 自定义table 名称
-func (*TrainPlan) TableName() string {
-	return "train_plan"
+func (*Petition) TableName() string {
+	return "petition"
 }
 
 // SearchField 定义模型的可搜索字段
-func (*TrainPlan) SearchField() []string {
-	return []string{"title", "personInCharge"}
+func (*Petition) SearchField() []string {
+	return []string{"name", "namePY", "idCardNum", "tel", "email", "remark"}
 }
 
 // NoDeletionId 禁止删除的数据id
-func (*TrainPlan) NoDeletionId() []int {
+func (*Petition) NoDeletionId() []int {
 	return []int{}
 }
 
 // WhereField 定义模型可作为条件的字段
-func (*TrainPlan) WhereField() []string {
+func (*Petition) WhereField() []string {
 	return []string{}
 }
 
 // TimeField 定义可做为时间范围查询的字段
-func (*TrainPlan) TimeField() []string {
+func (*Petition) TimeField() []string {
 	return []string{}
 }
 
 // GetSignStrByTrain 获取加密字符串，用在登录的时候加密处理
-func (Train *TrainPlan) GetSignStrByTrain(ctx *context.Context) string {
+func (m *Petition) GetSignStrByTrain(ctx *context.Context) string {
 	ua := ctx.Input.Header("user-agent")
-	return fmt.Sprintf("%x", sha1.Sum([]byte(fmt.Sprintf("%d%s%s", Train.Id, Train.Title, ua))))
+	return fmt.Sprintf("%x", sha1.Sum([]byte(fmt.Sprintf("%d%s%s", m.Id, m.Name, ua))))
 }
 
 // GetAuthUrl 获取已授权url
-func (Train *TrainPlan) GetAuthUrl() map[string]interface{} {
+func (m *Petition) GetAuthUrl() map[string]interface{} {
 	//FIXME:var (
 	//	urlArr orm.ParamsList
 	//)
@@ -68,7 +75,7 @@ func (Train *TrainPlan) GetAuthUrl() map[string]interface{} {
 	//o := orm.NewOrm()
 	//qs := o.QueryTable(new(AdminRole))
 
-	//_, err := qs.Filter("id__in", strings.Split(TrainPlan.Role, ",")).Filter("status", 1).ValuesFlat(&urlArr, "url")
+	//_, err := qs.Filter("id__in", strings.Split(Petition.Role, ",")).Filter("status", 1).ValuesFlat(&urlArr, "url")
 	//if err == nil {
 	//	urlIDStr := ""
 	//	for k, row := range urlArr {
@@ -104,12 +111,12 @@ func (Train *TrainPlan) GetAuthUrl() map[string]interface{} {
 }
 
 // GetShowMenu 获取当前用户已授权的显示菜单
-func (Train *TrainPlan) GetShowMenu() map[int]orm.Params {
+func (m *Petition) GetShowMenu() map[int]orm.Params {
 	var maps []orm.Params
 	returnMaps := make(map[int]orm.Params)
 	o := orm.NewOrm()
 
-	if Train.Id == 1 {
+	if m.Id == 1 {
 		_, err := o.QueryTable(new(AdminMenu)).Filter("is_show", 1).OrderBy("sort_id", "id").Values(&maps, "id", "parent_id", "name", "url", "icon", "sort_id")
 		if err == nil {
 			for _, m := range maps {
@@ -121,7 +128,7 @@ func (Train *TrainPlan) GetShowMenu() map[int]orm.Params {
 	}
 
 	//FIXME:var list orm.ParamsList
-	//_, err := o.QueryTable(new(AdminRole)).Filter("id__in", strings.Split(TrainPlan.Role, ",")).Filter("status", 1).ValuesFlat(&list, "url")
+	//_, err := o.QueryTable(new(AdminRole)).Filter("id__in", strings.Split(Petition.Role, ",")).Filter("status", 1).ValuesFlat(&list, "url")
 	//if err == nil {
 	//	var urlIDArr []string
 	//	for _, m := range list {
@@ -141,8 +148,8 @@ func (Train *TrainPlan) GetShowMenu() map[int]orm.Params {
 }
 
 // GetRoleText 用户角色名称
-func (Train *TrainPlan) GetRoleText() map[int]*AdminRole {
-	//FIXME:roleIDArr := strings.Split(TrainPlan.Role, ",")
+func (m *Petition) GetRoleText() map[int]*AdminRole {
+	//FIXME:roleIDArr := strings.Split(Petition.Role, ",")
 	var adminRole []*AdminRole
 	//_, err := orm.NewOrm().QueryTable(new(AdminRole)).Filter("id__in", roleIDArr, "id", "name").All(&adminRole)
 	//if err != nil {
@@ -156,9 +163,9 @@ func (Train *TrainPlan) GetRoleText() map[int]*AdminRole {
 }
 
 // GetTrain 获取所有用户
-func (*TrainPlan) GetTrain() []*TrainPlan {
-	var Trains []*TrainPlan
-	_, err := orm.NewOrm().QueryTable(new(TrainPlan)).All(&Trains)
+func (*Petition) GetTrain() []*Petition {
+	var Trains []*Petition
+	_, err := orm.NewOrm().QueryTable(new(Petition)).All(&Trains)
 	if err == nil {
 		return Trains
 	}

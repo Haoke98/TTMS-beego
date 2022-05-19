@@ -6,7 +6,7 @@ import (
 
 // QuotaForm 培训计划表单
 type QuotaForm struct {
-	TrainPlanId  int `form:"planId" validate:"required"`
+	PlanId       int `form:"planId" validate:"required"`
 	UniversityId int `form:"universityId" validate:"required"`
 	Quota        int `form:"quota" validate:"required"`
 }
@@ -14,8 +14,8 @@ type QuotaForm struct {
 // Messages 自定义验证返回消息
 func (f QuotaForm) Messages() map[string]string {
 	return validate.MS{
-		"TrainPlanId.required": "请提供培训计划ID.",
-		"University.required":  "请提供高校ID.",
-		"Quota.required":       "请提供报名名额数量.",
+		"PlanId.required":     "请提供培训计划ID.",
+		"University.required": "请提供高校ID.",
+		"Quota.required":      "请提供报名名额数量.",
 	}
 }

@@ -7,12 +7,12 @@ import (
 	"github.com/gookit/validate"
 )
 
-type QuotaController struct {
+type PetitionController struct {
 	baseController
 }
 
 // Index 用户管理-首页
-func (c *QuotaController) Index() {
+func (c *PetitionController) Index() {
 	id, _ := c.GetInt("id", -1)
 	planId, _ := c.GetInt("plan_id", -1)
 	if id <= 0 && planId <= 0 {
@@ -23,20 +23,20 @@ func (c *QuotaController) Index() {
 		}
 	}
 	var (
-		quotaService     services.QuotaService
+		petitionService  services.PetitionService
 		trainPlanService services.TrainPlanService
 	)
 	trainPlan := trainPlanService.GetById(planId)
-	data, pagination := quotaService.GetPaginateData(admin["per_page"].(int), gQueryParams)
-	c.Data["data"] = data
+	petitions, pagination := petitionService.GetPaginateData(admin["per_page"].(int), gQueryParams)
+	c.Data["petitions"] = petitions
 	c.Data["plan"] = trainPlan
 	c.Data["paginate"] = pagination
 	c.Layout = "public/base_modal.html"
-	c.TplName = "quota/index.html"
+	c.TplName = "petition/index.html"
 }
 
 // Update 系统管理-用户管理-修改
-func (c *QuotaController) Update() {
+func (c *PetitionController) Update() {
 	var form formvalidate.QuotaForm
 	if err := c.ParseForm(&form); err != nil {
 		response.ErrorWithMessage(err.Error(), c.Ctx)

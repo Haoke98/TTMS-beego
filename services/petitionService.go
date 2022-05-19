@@ -7,51 +7,48 @@ import (
 	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	"net/url"
-	"strconv"
 	"time"
 )
 
-type QuotaService struct {
+type PetitionService struct {
 	BaseService
 }
-type QuotaDTO struct {
-	models.Quota
+type PetitionDTO struct {
+	models.Petition
 	University models.University
 }
 
-// GetPaginateData 通过分页获取培训计划
-func (s *QuotaService) GetPaginateData(listRows int, params url.Values) ([]*QuotaDTO, page.Pagination) {
+// GetPaginateData 通过分页获取培训计划所关联的所有报名申请
+func (s *PetitionService) GetPaginateData(listRows int, params url.Values) ([]*PetitionDTO, page.Pagination) {
 	var (
-		qdtos             []*QuotaDTO
+		pdtos             []*PetitionDTO
 		universityService UniversityService
 		planIdStr         string
 	)
-	if params.Has("plan_id") {
-		planIdStr = params.Get("plan_id")
-	} else {
+	//搜索、查询字段赋值
+	s.SearchField = append(s.SearchField, new(models.Petition).SearchField()...)
+
+	var petitions []*models.Petition
+	o := orm.NewOrm().QueryTable(new(models.Petition))
+	if params.Has("id") && !params.Has("plan_id") {
 		planIdStr = params.Get("id")
 		params.Del("id")
 		params.Add("plan_id", planIdStr)
 	}
-	us, pagination := universityService.GetPaginateData(listRows, params)
-	for _, u := range us {
-		planId, err := strconv.Atoi(planIdStr)
-		if err == nil {
-			obj := s.GetByUniversityIdAndPlanId(u.Id, planId)
-			qdto := QuotaDTO{Quota: models.Quota{UniversityId: u.Id}, University: *u}
-			if obj != nil {
-				qdto.Quota = *obj
-			}
-			qdtos = append(qdtos, &qdto)
-		} else {
-			fmt.Println(err)
-		}
+	_, err := s.PaginateAndScopeWhere(o, listRows, params).All(&petitions)
+	if err != nil {
+		return nil, s.Pagination
 	}
-	return qdtos, pagination
+	for _, p := range petitions {
+		u := universityService.GetUniversityById(p.UniversityId)
+		dto := PetitionDTO{Petition: *p, University: *u}
+		pdtos = append(pdtos, &dto)
+	}
+	return pdtos, s.Pagination
 }
 
 // GetById 根据培训计划和高校ID获取Quota记录
-func (*QuotaService) GetByUniversityIdAndPlanId(universityId, planId int) *models.Quota {
+func (*PetitionService) GetByUniversityIdAndPlanId(universityId, planId int) *models.Quota {
 	o := orm.NewOrm()
 	obj := models.Quota{}
 	err := o.QueryTable(new(models.Quota)).Filter("university_id", universityId).Filter("plan_id", planId).One(&obj)
@@ -62,7 +59,7 @@ func (*QuotaService) GetByUniversityIdAndPlanId(universityId, planId int) *model
 }
 
 // Create 新增培训计划
-func (*QuotaService) Create(form *formvalidate.QuotaForm) (int, models.Quota) {
+func (*PetitionService) Create(form *formvalidate.QuotaForm) (int, models.Quota) {
 	obj := models.Quota{
 		TrainPlanId:  form.PlanId,
 		UniversityId: form.UniversityId,
@@ -81,7 +78,7 @@ func (*QuotaService) Create(form *formvalidate.QuotaForm) (int, models.Quota) {
 }
 
 // Update 更新培训计划
-func (*QuotaService) Update(form *formvalidate.QuotaForm) int {
+func (*PetitionService) Update(form *formvalidate.QuotaForm) int {
 	//o := orm.NewOrm()
 	//obj := models.Quota{Id: form.Id}
 	//if o.Read(&obj) == nil {
@@ -101,7 +98,7 @@ func (*QuotaService) Update(form *formvalidate.QuotaForm) int {
 }
 
 // Update 更新或者新增Quota记录
-func (s *QuotaService) CreateOrUpdate(form *formvalidate.QuotaForm) int {
+func (s *PetitionService) CreateOrUpdate(form *formvalidate.QuotaForm) int {
 	o := orm.NewOrm()
 	var obj models.Quota
 	err := o.QueryTable(new(models.Quota)).Filter("plan_id", form.PlanId).Filter("university_id", form.UniversityId).One(&obj)

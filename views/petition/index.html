@@ -1,0 +1,110 @@
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-body">
+                    <form class="form-inline searchForm" id="searchForm"
+                          action="/admin/quota/index?plan_id={{ $.plan.Id}}" method="GET">
+
+                        <div class="form-group">
+                            <input value="{{._keywords}}"
+                                   name="_keywords" id="_keywords" class="form-control input-sm" placeholder="名称/编号">
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-search"></i> 查询
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <button onclick="clearQuotaSearchForm()" class="btn btn-sm btn-default" type="button"><i
+                                    class="fa  fa-eraser"></i> 清空查询
+                            </button>
+                        </div>
+                    </form>
+                    <script>
+                        function clearQuotaSearchForm() {
+                            let url_all = window.location.href;
+                            let arr = url_all.split('?');
+                            let url = arr[0] + "?plan_id={{$.plan.Id}}"
+                            $.pjax({url: url, container: '#pjax-container'});
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <!--数据列表顶部-->
+                <div class="box-body table-responsive">
+                    <table class="table table-hover table-bordered datatable" width="100%">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>
+                                <input id="dataCheckAll" type="checkbox" onclick="checkAll(this)" class="checkbox"
+                                       placeholder="全选/取消">
+                            </th>
+                            <th>校徽</th>
+                            <th>名称</th>
+                            <th>编号</th>
+                            <th>可报名人数</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{range $key, $item := .data}}
+                        <tr>
+                            <td>{{$key}}</td>
+                            <td>
+                                <input type="checkbox" onclick="checkThis(this)" name="data-checkbox"
+                                       data-id="{{$item.Id}}" class="checkbox data-list-check" value="{{$item.Id}}"
+                                       placeholder="选择/取消">
+                            </td>
+                            <td><img style="max-width: 60px" src="{{$item.University.Badge}}"></td>
+                            <td>{{$item.University.Name}}</td>
+                            <td>{{$item.University.Code}}</td>
+                            <td><input type="number" value="{{$item.Quota.Quota}}" data-planId="{{ $.plan.Id}}"
+                                       data-universityId="{{$item.University.Id}}" onchange="changeQuota(this)"></td>
+                        </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+                <script>
+
+                    function changeQuota(e) {
+                        _planId = e.getAttribute("data-planId")
+                        _universityId = e.getAttribute("data-universityId")
+                        _value = e.value
+                        ajaxRequest("/admin/quota/update", "POST", {
+                            planId: _planId,
+                            universityId: _universityId,
+                            quota: _value
+                        })
+                        console.log("有修改：", _planId, _universityId, _value)
+                    }
+                </script>
+                <!-- 数据列表底部 -->
+                {{if lt 6 .paginate.Total}}
+                <div class="box-footer">
+                    {{ str2html .paginate.BootStrapRenderLink}}
+                    <label class="control-label pull-right" style="margin-right: 10px; font-weight: 100;">
+                        <small>共{{.paginate.Total}}条记录</small>&nbsp;
+                        <small>每页显示</small>
+                        &nbsp;
+                        <select class="input-sm" onchange="changePerPage(this)">
+                            {{range $index, $val := $.admin.per_page_config}}
+                            <option value="{{$val}}" {{if eq $val $.admin.per_page}} selected {{end}}>{{$val}}</option>
+                            {{end}}
+                        </select>
+                        &nbsp;
+                        <small>条记录</small>
+                    </label>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+</section>

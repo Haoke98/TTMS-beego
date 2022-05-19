@@ -170,6 +170,8 @@ func init() {
 
 		web.NSRouter("/quota/index", &controllers.QuotaController{}, "get:Index"),
 		web.NSRouter("/quota/update", &controllers.QuotaController{}, "post:Update"),
+
+		web.NSRouter("/petition/index", &controllers.PetitionController{}, "get:Index"),
 	)
 
 	web.AddNamespace(admin)
