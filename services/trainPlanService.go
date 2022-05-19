@@ -21,8 +21,8 @@ type TrainPlanService struct {
 	BaseService
 }
 
-// GetAdminUserById 根据id获取一条admin_user数据
-func (*TrainPlanService) GetAdminUserById(id int) *models.TrainPlan {
+// GetById 根据id获取一条admin_user数据
+func (*TrainPlanService) GetById(id int) *models.TrainPlan {
 	o := orm.NewOrm()
 	train := models.TrainPlan{Id: id}
 	err := o.Read(&train)

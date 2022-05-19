@@ -88,7 +88,7 @@ func (auc *TrainPlanController) Edit() {
 		trainService services.TrainPlanService
 	)
 
-	train := trainService.GetAdminUserById(id)
+	train := trainService.GetById(id)
 	if train == nil {
 		response.ErrorWithMessage("Not Found Info By Id.", auc.Ctx)
 	}

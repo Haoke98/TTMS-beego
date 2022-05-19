@@ -20,10 +20,10 @@ type TrainPlanForm struct {
 // Messages 自定义验证返回消息
 func (f TrainPlanForm) Messages() map[string]string {
 	return validate.MS{
-		"Name.required":                  "请填写标题.",
-		"Code.required":                  "请填简介.",
-		"RegistrationStartedAt.required": "请选择报名开始时间.",
-		"RegistrationEndAt.required":     "请选择报名结束时间.",
-		"PersonInCharge.required":        "请填写负责人姓名.",
+		"Name.required":              "请填写标题.",
+		"Code.required":              "请填简介.",
+		"Quota.required":             "请选择报名开始时间.",
+		"RegistrationEndAt.required": "请选择报名结束时间.",
+		"PersonInCharge.required":    "请填写负责人姓名.",
 	}
 }

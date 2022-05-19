@@ -202,13 +202,13 @@ function checkAll(obj) {
 
 /* 表单提交 */
 function formSubmit(form) {
-    let loadT = layer.msg('正在提交，请稍候…', {icon: 16, time: 0, shade: [0.3, "#000"],scrollbar: false,});
+    let loadT = layer.msg('正在提交，请稍候…', {icon: 16, time: 0, shade: [0.3, "#000"], scrollbar: false,});
     let action = $(form).attr('action');
     let method = $(form).attr('method');
     let data = new FormData($(form)[0]);
 
     //设置全局通用_xsrf验证token
-    data.set("_xsrf",$('meta[name="_xsrf"]').attr('content'));
+    data.set("_xsrf", $('meta[name="_xsrf"]').attr('content'));
 
     $.ajax({
             url: action,
@@ -227,7 +227,7 @@ function formSubmit(form) {
             },
             error: function (xhr, type, errorThrown) {
                 //异常处理；
-                layer.msg('访问错误,代码' + xhr.status, {icon: 2,scrollbar: false,});
+                layer.msg('访问错误,代码' + xhr.status, {icon: 2, scrollbar: false,});
             }
         }
     );
@@ -250,7 +250,7 @@ function goUrl(url = 1) {
     } else if (url === 'url://back' || url === 3) {
         console.log('Return to the last page.');
         history.back(1);
-    }else if (url === 4 || url === 'url://close-refresh') {
+    } else if (url === 4 || url === 'url://close-refresh') {
         console.log('Close this layer page and refresh parent page.');
         let indexWindow = parent.layer.getFrameIndex(window.name);
         //先刷新父级页面
@@ -322,7 +322,7 @@ $(function () {
         } else {
             if (dataId === 'checked') {
                 if (dataSelectIds.length === 0) {
-                    layer.msg('请选择要操作的数据', {icon: 2,scrollbar: false,});
+                    layer.msg('请选择要操作的数据', {icon: 2, scrollbar: false,});
                     return false;
                 }
                 dataId = dataSelectIds;
@@ -402,7 +402,7 @@ $(function () {
  * @param go 要跳转的url
  */
 function ajaxRequest(url, method, data, go) {
-    var loadT = layer.msg('正在请求,请稍候…', {icon: 16, time: 0, shade: [0.3, '#000'],scrollbar: false,});
+    var loadT = layer.msg('正在请求,请稍候…', {icon: 16, time: 0, shade: [0.3, '#000'], scrollbar: false,});
     $.ajax({
             url: url,
             dataType: 'json',
@@ -419,7 +419,29 @@ function ajaxRequest(url, method, data, go) {
             },
             error: function (xhr, type, errorThrown) {
                 //异常处理；
-                layer.msg('访问错误,代码' + xhr.status, {icon: 2,scrollbar: false,});
+                layer.msg('访问错误,代码' + xhr.status, {icon: 2, scrollbar: false,});
+            }
+        }
+    );
+}
+
+function ajaxRequest(url, method, data) {
+    var loadT = layer.msg('正在请求,请稍候…', {icon: 16, time: 0, shade: [0.3, '#000'], scrollbar: false,});
+    $.ajax({
+            url: url,
+            dataType: 'json',
+            type: method,
+            data: data,
+            success: function (result) {
+                layer.close(loadT);
+                layer.msg(result.msg, {
+                    icon: result.code ? 1 : 2,
+                    scrollbar: false,
+                });
+            },
+            error: function (xhr, type, errorThrown) {
+                //异常处理；
+                layer.msg('访问错误,代码' + xhr.status, {icon: 2, scrollbar: false,});
             }
         }
     );
@@ -427,7 +449,7 @@ function ajaxRequest(url, method, data, go) {
 
 //改变每页数量
 function changePerPage(obj) {
-    Cookies.set(cookiePrefix + 'admin_per_page', obj.value, {expires:30});
+    Cookies.set(cookiePrefix + 'admin_per_page', obj.value, {expires: 30});
     $.pjax.reload();
 }
 
@@ -437,7 +459,7 @@ function changePerPage(obj) {
  */
 function checkAuth(url) {
     var hasAuth = false;
-    var loadT = layer.msg('正在请求,请稍候…', {icon: 16, time: 0, shade: [0.3, '#000'],scrollbar: false,});
+    var loadT = layer.msg('正在请求,请稍候…', {icon: 16, time: 0, shade: [0.3, '#000'], scrollbar: false,});
     $.post({
         url: url,
         data: {"check_auth": 1},
@@ -455,7 +477,7 @@ function checkAuth(url) {
             }
         },
         error: function (xhr, type, errorThrown) {
-            layer.msg('访问错误,代码' + xhr.status, {icon: 2,scrollbar: false,});
+            layer.msg('访问错误,代码' + xhr.status, {icon: 2, scrollbar: false,});
         }
     });
     return hasAuth;

@@ -56,12 +56,27 @@
                             <td><img style="max-width: 60px" src="{{$item.University.Badge}}"></td>
                             <td>{{$item.University.Name}}</td>
                             <td>{{$item.University.Code}}</td>
-                            <td><input type="number" value="{{$item.Quota.Quota}}"></td>
+                            <td><input type="number" value="{{$item.Quota.Quota}}" data-planId="{{ $.plan.Id}}"
+                                       data-universityId="{{$item.University.Id}}" onchange="changeQuota(this)"></td>
                         </tr>
                         {{end}}
                         </tbody>
                     </table>
                 </div>
+                <script>
+
+                    function changeQuota(e) {
+                        _planId = e.getAttribute("data-planId")
+                        _universityId = e.getAttribute("data-universityId")
+                        _value = e.value
+                        ajaxRequest("/admin/quota/update", "POST", {
+                            planId: _planId,
+                            universityId: _universityId,
+                            quota: _value
+                        })
+                        console.log("有修改：", _planId, _universityId, _value)
+                    }
+                </script>
                 <!-- 数据列表底部 -->
                 {{if lt 6 .paginate.Total}}
                 <div class="box-footer">

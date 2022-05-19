@@ -1,15 +1,17 @@
 package models
 
-import "github.com/beego/beego/v2/client/orm"
+import (
+	"github.com/beego/beego/v2/client/orm"
+	"time"
+)
 
 type Quota struct {
-	Id           int `orm:"column(id);auto;size(11)" description:"表ID" json:"id"`
-	UniversityId int `orm:"column(university_id);size(11)" description:"高校ID" json:"universityId"`
-	TrainPlanId  int `orm:"column(plan_id);size(11)" description:"培训计划ID" json:"trainPlanId"`
-	Quota        int `orm:"column(quota);size(30)" description:"名额" json:"quota"`
-	CreateTime   int `orm:"column(create_time);size(10);default(0)" description:"操作时间" json:"create_time"`
-	UpdateTime   int `orm:"column(update_time);size(10);default(0)" description:"更新时间" json:"update_time"`
-	DeleteTime   int `orm:"column(delete_time);;size(10);default(0)" description:"删除时间" json:"delete_time"`
+	Id           int       `orm:"column(id);auto;size(11)" description:"表ID" json:"id"`
+	UniversityId int       `orm:"column(university_id);size(11)" description:"高校ID" json:"universityId"`
+	TrainPlanId  int       `orm:"column(plan_id);size(11)" description:"培训计划ID" json:"trainPlanId"`
+	Quota        int       `orm:"column(quota);size(30)" description:"名额" json:"quota"`
+	CreatedAt    time.Time `orm:"column(create_time);" description:"操作时间" json:"create_time"`
+	UpdatedAt    time.Time `orm:"column(update_time);" description:"更新时间" json:"update_time"`
 }
 
 // TableName 自定义table 名称
