@@ -3,7 +3,8 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-body">
-                    <form class="form-inline searchForm" id="searchForm" action="/admin/admin_user/index" method="GET">
+                    <form class="form-inline searchForm" id="searchForm"
+                          action="/admin/quota/index?plan_id={{ $.plan.Id}}" method="GET">
 
                         <div class="form-group">
                             <input value="{{._keywords}}"
@@ -15,11 +16,19 @@
                             </button>
                         </div>
                         <div class="form-group">
-                            <button onclick="clearSearchForm()" class="btn btn-sm btn-default" type="button"><i
+                            <button onclick="clearQuotaSearchForm()" class="btn btn-sm btn-default" type="button"><i
                                     class="fa  fa-eraser"></i> 清空查询
                             </button>
                         </div>
                     </form>
+                    <script>
+                        function clearQuotaSearchForm() {
+                            let url_all = window.location.href;
+                            let arr = url_all.split('?');
+                            let url = arr[0] + "?plan_id={{$.plan.Id}}"
+                            $.pjax({url: url, container: '#pjax-container'});
+                        }
+                    </script>
                 </div>
             </div>
         </div>
