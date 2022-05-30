@@ -8,8 +8,8 @@ import (
 	"time"
 )
 
-// TrainCourse struct
-type TrainCourse struct {
+// Course struct
+type Course struct {
 	Id                    int       `orm:"column(id);auto;size(11)" description:"表ID" json:"id"`
 	CreatedAt             time.Time `orm:"column(createdAt);" description:"创建时间" json:"createdAt"`
 	UpdatedAt             time.Time `orm:"column(updatedAt);" description:"创建时间" json:"updatedAt"`
@@ -24,42 +24,42 @@ type TrainCourse struct {
 
 //在init中注册定义的model
 func init() {
-	orm.RegisterModel(new(TrainCourse))
+	orm.RegisterModel(new(Course))
 }
 
 // TableName 自定义table 名称
-func (*TrainCourse) TableName() string {
+func (*Course) TableName() string {
 	return "train_course"
 }
 
 // SearchField 定义模型的可搜索字段
-func (*TrainCourse) SearchField() []string {
+func (*Course) SearchField() []string {
 	return []string{"nickname", "username"}
 }
 
 // NoDeletionId 禁止删除的数据id
-func (*TrainCourse) NoDeletionId() []int {
+func (*Course) NoDeletionId() []int {
 	return []int{}
 }
 
 // WhereField 定义模型可作为条件的字段
-func (*TrainCourse) WhereField() []string {
+func (*Course) WhereField() []string {
 	return []string{}
 }
 
 // TimeField 定义可做为时间范围查询的字段
-func (*TrainCourse) TimeField() []string {
+func (*Course) TimeField() []string {
 	return []string{}
 }
 
 // GetSignStrByTrain 获取加密字符串，用在登录的时候加密处理
-func (Train *TrainCourse) GetSignStrByTrain(ctx *context.Context) string {
+func (Train *Course) GetSignStrByTrain(ctx *context.Context) string {
 	ua := ctx.Input.Header("user-agent")
 	return fmt.Sprintf("%x", sha1.Sum([]byte(fmt.Sprintf("%d%s%s", Train.Id, Train.Title, ua))))
 }
 
 // GetAuthUrl 获取已授权url
-func (Train *TrainCourse) GetAuthUrl() map[string]interface{} {
+func (Train *Course) GetAuthUrl() map[string]interface{} {
 	//FIXME:var (
 	//	urlArr orm.ParamsList
 	//)
@@ -68,7 +68,7 @@ func (Train *TrainCourse) GetAuthUrl() map[string]interface{} {
 	//o := orm.NewOrm()
 	//qs := o.QueryTable(new(AdminRole))
 
-	//_, err := qs.Filter("id__in", strings.Split(TrainCourse.Role, ",")).Filter("status", 1).ValuesFlat(&urlArr, "url")
+	//_, err := qs.Filter("id__in", strings.Split(Course.Role, ",")).Filter("status", 1).ValuesFlat(&urlArr, "url")
 	//if err == nil {
 	//	urlIDStr := ""
 	//	for k, row := range urlArr {
@@ -104,7 +104,7 @@ func (Train *TrainCourse) GetAuthUrl() map[string]interface{} {
 }
 
 // GetShowMenu 获取当前用户已授权的显示菜单
-func (Train *TrainCourse) GetShowMenu() map[int]orm.Params {
+func (Train *Course) GetShowMenu() map[int]orm.Params {
 	var maps []orm.Params
 	returnMaps := make(map[int]orm.Params)
 	o := orm.NewOrm()
@@ -121,7 +121,7 @@ func (Train *TrainCourse) GetShowMenu() map[int]orm.Params {
 	}
 
 	//FIXME:var list orm.ParamsList
-	//_, err := o.QueryTable(new(AdminRole)).Filter("id__in", strings.Split(TrainCourse.Role, ",")).Filter("status", 1).ValuesFlat(&list, "url")
+	//_, err := o.QueryTable(new(AdminRole)).Filter("id__in", strings.Split(Course.Role, ",")).Filter("status", 1).ValuesFlat(&list, "url")
 	//if err == nil {
 	//	var urlIDArr []string
 	//	for _, m := range list {
@@ -141,8 +141,8 @@ func (Train *TrainCourse) GetShowMenu() map[int]orm.Params {
 }
 
 // GetRoleText 用户角色名称
-func (Train *TrainCourse) GetRoleText() map[int]*AdminRole {
-	//FIXME:roleIDArr := strings.Split(TrainCourse.Role, ",")
+func (Train *Course) GetRoleText() map[int]*AdminRole {
+	//FIXME:roleIDArr := strings.Split(Course.Role, ",")
 	var adminRole []*AdminRole
 	//_, err := orm.NewOrm().QueryTable(new(AdminRole)).Filter("id__in", roleIDArr, "id", "name").All(&adminRole)
 	//if err != nil {
@@ -156,9 +156,9 @@ func (Train *TrainCourse) GetRoleText() map[int]*AdminRole {
 }
 
 // GetTrain 获取所有用户
-func (*TrainCourse) GetTrain() []*TrainCourse {
-	var Trains []*TrainCourse
-	_, err := orm.NewOrm().QueryTable(new(TrainCourse)).All(&Trains)
+func (*Course) GetTrain() []*Course {
+	var Trains []*Course
+	_, err := orm.NewOrm().QueryTable(new(Course)).All(&Trains)
 	if err == nil {
 		return Trains
 	}

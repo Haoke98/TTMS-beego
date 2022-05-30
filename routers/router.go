@@ -173,6 +173,9 @@ func init() {
 
 		web.NSRouter("/petition/index", &controllers.PetitionController{}, "get:Index"),
 	)
+	train := web.NewNamespace("/train",
+		web.NSRouter("/plan", &controllers.TrainPlanController{}, "get:Get"),
+	)
 
-	web.AddNamespace(admin)
+	web.AddNamespace(admin, train)
 }

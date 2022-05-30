@@ -19,7 +19,7 @@ type TrainPlanController struct {
 	baseController
 }
 
-// Index 用户管理-首页
+// Index 培训计划管理-首页
 func (auc *TrainPlanController) Index() {
 	var trainService services.TrainPlanService
 	data, pagination := trainService.GetPaginateData(admin["per_page"].(int), gQueryParams)
@@ -30,7 +30,17 @@ func (auc *TrainPlanController) Index() {
 	auc.TplName = "train_plan/index.html"
 }
 
-// Add 用户管理-添加界面
+func (c *TrainPlanController) Get() {
+	var trainService services.TrainPlanService
+	data, pagination := trainService.GetPaginateData(admin["per_page"].(int), gQueryParams)
+	c.Data["json"] = map[string]interface{}{
+		"plans":      data,
+		"pagination": pagination,
+	}
+	c.ServeJSON()
+}
+
+// Add 培训计划管理-添加界面
 func (auc *TrainPlanController) Add() {
 	var (
 		adminRoleService services.AdminRoleService
