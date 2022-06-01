@@ -15,19 +15,19 @@ import (
 	"strings"
 )
 
-var adminLogService services.AdminLogService
+var userLogService services.UserLogService
 
-// AuthController struct
-type AuthController struct {
+// UserAuthController struct
+type UserAuthController struct {
 	baseController
 }
 
 // Login 登录界面
-func (ac *AuthController) Login() {
+func (ac *UserAuthController) Login() {
 	//加载登录配置信息
 	var settingService services.SettingService
 	data := settingService.Show(1)
-	for _,setting := range data {
+	for _, setting := range data {
 		settingService.LoadOrUpdateGlobalBaseConfig(setting)
 	}
 
@@ -37,19 +37,19 @@ func (ac *AuthController) Login() {
 		Captcha    string
 		Background string
 	}{
-		Token:      global.BA_CONFIG.Login.Token,
-		Captcha:    global.BA_CONFIG.Login.Captcha,
+		Token:   global.BA_CONFIG.Login.Token,
+		Captcha: global.BA_CONFIG.Login.Captcha,
 	}
 	//登录背景图片
-	if _,err := os.Stat(strings.TrimLeft(global.BA_CONFIG.Login.Background,"/")); err != nil{
+	if _, err := os.Stat(strings.TrimLeft(global.BA_CONFIG.Login.Background, "/")); err != nil {
 		global.BA_CONFIG.Login.Background = "/static/admin/images/login-default-bg.jpg"
 	}
 	loginConfig.Background = global.BA_CONFIG.Login.Background
 
 	//login界面只需要name字段
 	admin := map[string]interface{}{
-		"name":            global.BA_CONFIG.Base.Name,
-		"title":           "登录",
+		"name":  global.BA_CONFIG.Base.Name,
+		"title": "登录",
 	}
 
 	ac.Data["login_config"] = loginConfig
@@ -61,15 +61,15 @@ func (ac *AuthController) Login() {
 }
 
 // Logout 退出登录
-func (ac *AuthController) Logout() {
-	ac.DelSession(global.LOGIN_USER)
-	ac.Ctx.SetCookie(global.LOGIN_USER_ID, "", -1)
-	ac.Ctx.SetCookie(global.LOGIN_USER_ID_SIGN, "", -1)
+func (ac *UserAuthController) Logout() {
+	ac.DelSession(global.LOGIN_ADMIN_USER)
+	ac.Ctx.SetCookie(global.LOGIN_ADMIN_USER_ID, "", -1)
+	ac.Ctx.SetCookie(global.LOGIN_ADMIN_USER_ID_SIGN, "", -1)
 	ac.Redirect("/admin/auth/login", http.StatusFound)
 }
 
 // CheckLogin 登录认证
-func (ac *AuthController) CheckLogin() {
+func (ac *UserAuthController) CheckLogin() {
 	//数据校验
 	valid := validation.Validation{}
 	loginForm := formvalidate.LoginForm{}
@@ -101,7 +101,7 @@ func (ac *AuthController) CheckLogin() {
 	}
 
 	//登录日志记录
-	adminLogService.LoginLog(loginUser.Id, ac.Ctx)
+	userLogService.LoginLog(loginUser.Id, ac.Ctx)
 
 	redirect, _ := ac.GetSession("redirect").(string)
 	if redirect != "" {
@@ -112,7 +112,7 @@ func (ac *AuthController) CheckLogin() {
 }
 
 // RefreshCaptcha 刷新验证码
-func (ac *AuthController) RefreshCaptcha() {
+func (ac *UserAuthController) RefreshCaptcha() {
 	captchaID := ac.GetString("captchaId")
 	res := map[string]interface{}{
 		"isNew": false,

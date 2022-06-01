@@ -33,4 +33,5 @@ func main() {
 	orm.RunSyncdb("default", false, true)
 	//启动beego
 	beego.Run()
+
 }

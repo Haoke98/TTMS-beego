@@ -78,10 +78,10 @@ func isAuthExceptUrl(url string, m map[string]interface{}) bool {
 
 //是否登录
 func isLogin(ctx *context.Context) (*models.AdminUser, bool) {
-	loginUser, ok := ctx.Input.Session(global.LOGIN_USER).(models.AdminUser)
+	loginUser, ok := ctx.Input.Session(global.LOGIN_ADMIN_USER).(models.AdminUser)
 	if !ok {
-		loginUserIDStr := ctx.GetCookie(global.LOGIN_USER_ID)
-		loginUserIDSign := ctx.GetCookie(global.LOGIN_USER_ID_SIGN)
+		loginUserIDStr := ctx.GetCookie(global.LOGIN_ADMIN_USER_ID)
+		loginUserIDSign := ctx.GetCookie(global.LOGIN_ADMIN_USER_ID_SIGN)
 
 		if loginUserIDStr != "" && loginUserIDSign != "" {
 			loginUserID, _ := strconv.Atoi(loginUserIDStr)
@@ -89,7 +89,7 @@ func isLogin(ctx *context.Context) (*models.AdminUser, bool) {
 			loginUserPointer := adminUserService.GetAdminUserById(loginUserID)
 
 			if loginUserPointer != nil && loginUserPointer.GetSignStrByAdminUser((*context2.Context)(ctx)) == loginUserIDSign {
-				ctx.Output.Session(global.LOGIN_USER, *loginUserPointer)
+				ctx.Output.Session(global.LOGIN_ADMIN_USER, *loginUserPointer)
 				return loginUserPointer, true
 			}
 		}

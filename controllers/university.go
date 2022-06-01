@@ -216,7 +216,7 @@ func (auc *UniversityController) UpdateNickName() {
 	if num > 0 {
 		//修改成功后，更新session的登录用户信息
 		loginAdminUser := adminUserService.GetAdminUserById(id)
-		auc.SetSession(global.LOGIN_USER, *loginAdminUser)
+		auc.SetSession(global.LOGIN_ADMIN_USER, *loginAdminUser)
 		response.SuccessWithMessageAndUrl("修改成功", global.URL_RELOAD, auc.Ctx)
 	} else {
 		response.Error(auc.Ctx)
@@ -286,7 +286,7 @@ func (auc *UniversityController) UpdateAvatar() {
 		if num > 0 {
 			//修改成功后，更新session的登录用户信息
 			loginAdminUser := adminUserService.GetAdminUserById(loginUser.Id)
-			auc.SetSession(global.LOGIN_USER, *loginAdminUser)
+			auc.SetSession(global.LOGIN_ADMIN_USER, *loginAdminUser)
 			response.SuccessWithMessageAndUrl("修改成功", global.URL_RELOAD, auc.Ctx)
 		} else {
 			response.Error(auc.Ctx)

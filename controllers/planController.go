@@ -30,11 +30,39 @@ func (auc *TrainPlanController) Index() {
 	auc.TplName = "train_plan/index.html"
 }
 
+type PlanDTO1 struct {
+	Id         int    `json:"id"`
+	Title      string `json:"title"`
+	Summary    string `json:"summary"`
+	Cover      string `json:"cover"`
+	Status     int    `json:"status"`
+	Favor      bool   `json:"favor"`
+	Applicants int    `json:"applicants"`
+	Quota      int    `json:"quota"`
+	Start      string `json:"start"`
+	End        string `json:"end"`
+}
+
 func (c *TrainPlanController) Get() {
-	var trainService services.TrainPlanService
-	data, pagination := trainService.GetPaginateData(admin["per_page"].(int), gQueryParams)
+	var trainPlanService services.TrainPlanService
+	var quotaService services.QuotaService
+	data, pagination := trainPlanService.GetPaginateData(admin["per_page"].(int), gQueryParams)
+	var plans []PlanDTO1
+	for _, plan := range data {
+		plans = append(plans, PlanDTO1{
+			Id:         plan.Id,
+			Title:      plan.Title,
+			Summary:    "想不想通过专业的培训达到自己的教育梦，提高自己的教师技能，课堂效率？那还愣着干嘛？赶快行动啊！",
+			Cover:      "",
+			Status:     0,
+			Favor:      trainPlanService.IsFavor(plan.Id, 0),
+			Applicants: 92,
+			Quota:      quotaService.GetTotalCount(plan.Id),
+			Start:      plan.RegistrationStartedAt.Format("06/01/02 15:04"),
+			End:        plan.RegistrationStartedAt.Format("06/01/02 15:04")})
+	}
 	c.Data["json"] = map[string]interface{}{
-		"plans":      data,
+		"plans":      plans,
 		"pagination": pagination,
 	}
 	c.ServeJSON()
@@ -265,7 +293,7 @@ func (auc *TrainPlanController) UpdateNickName() {
 	if num > 0 {
 		//修改成功后，更新session的登录用户信息
 		loginAdminUser := adminUserService.GetAdminUserById(id)
-		auc.SetSession(global.LOGIN_USER, *loginAdminUser)
+		auc.SetSession(global.LOGIN_ADMIN_USER, *loginAdminUser)
 		response.SuccessWithMessageAndUrl("修改成功", global.URL_RELOAD, auc.Ctx)
 	} else {
 		response.Error(auc.Ctx)
@@ -335,7 +363,7 @@ func (auc *TrainPlanController) UpdateAvatar() {
 		if num > 0 {
 			//修改成功后，更新session的登录用户信息
 			loginAdminUser := adminUserService.GetAdminUserById(loginUser.Id)
-			auc.SetSession(global.LOGIN_USER, *loginAdminUser)
+			auc.SetSession(global.LOGIN_ADMIN_USER, *loginAdminUser)
 			response.SuccessWithMessageAndUrl("修改成功", global.URL_RELOAD, auc.Ctx)
 		} else {
 			response.Error(auc.Ctx)

@@ -82,14 +82,14 @@ func (*TrainPlanService) CheckLogin(loginForm formvalidate.LoginForm, ctx *conte
 		return nil, errors.New("用户被冻结")
 	}
 
-	ctx.Output.Session(global.LOGIN_USER, adminUser)
+	ctx.Output.Session(global.LOGIN_ADMIN_USER, adminUser)
 
 	if loginForm.Remember != "" {
-		ctx.SetCookie(global.LOGIN_USER_ID, strconv.Itoa(adminUser.Id), 7200)
-		ctx.SetCookie(global.LOGIN_USER_ID_SIGN, adminUser.GetSignStrByAdminUser(ctx), 7200)
+		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID, strconv.Itoa(adminUser.Id), 7200)
+		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID_SIGN, adminUser.GetSignStrByAdminUser(ctx), 7200)
 	} else {
-		ctx.SetCookie(global.LOGIN_USER_ID, ctx.GetCookie(global.LOGIN_USER_ID), -1)
-		ctx.SetCookie(global.LOGIN_USER_ID_SIGN, ctx.GetCookie(global.LOGIN_USER_ID_SIGN), -1)
+		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID, ctx.GetCookie(global.LOGIN_ADMIN_USER_ID), -1)
+		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID_SIGN, ctx.GetCookie(global.LOGIN_ADMIN_USER_ID_SIGN), -1)
 	}
 
 	return &adminUser, nil
@@ -250,4 +250,36 @@ func (*TrainPlanService) Del(ids []int) int {
 		return int(count)
 	}
 	return 0
+}
+
+func (s *TrainPlanService) IsFavor(planId, userId int) bool {
+	o := orm.NewOrm()
+	var fp *models.FavorPlan
+	err := o.QueryTable(new(models.FavorPlan)).Filter("plan_id", planId).Filter("user_id", userId).One(&fp)
+	if err == nil && fp != nil {
+		return true
+	}
+	return false
+}
+
+func (s *TrainPlanService) Favor(planId, userId int) int {
+	fp := models.FavorPlan{UserId: userId, PlanId: planId}
+	id, err := orm.NewOrm().Insert(&fp)
+	if err == nil {
+		return int(id)
+	} else {
+		fmt.Println(err)
+		return -1
+	}
+}
+
+func (s *TrainPlanService) Abolish(planId, userId int) int {
+	o := orm.NewOrm()
+	num, err := o.QueryTable(new(models.FavorPlan)).Filter("plan_id", planId).Filter("user_id", userId).Delete()
+	if err != nil {
+		fmt.Println(err)
+		return -1
+	} else {
+		return int(num)
+	}
 }

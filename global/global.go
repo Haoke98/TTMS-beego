@@ -17,13 +17,17 @@ const URL_CLOSE_LAYER = "url://close-layer"
 // URL_CLOSE_REFRESH 关闭当前弹窗并刷新父级
 const URL_CLOSE_REFRESH = "url://close-refresh"
 
-// LOGIN_USER 登录用户key
+// LOGIN_ADMIN_USER 登录用户key
+const LOGIN_ADMIN_USER = "loginAdminUser"
+
+// LOGIN_ADMIN_USER_ID 登录用户id
+const LOGIN_ADMIN_USER_ID = "LoginAdminUserId"
+
+// LOGIN_ADMIN_USER_ID_SIGN 登录用户签名
+const LOGIN_ADMIN_USER_ID_SIGN = "loginAdminUserIdSign"
+
 const LOGIN_USER = "loginUser"
-
-// LOGIN_USER_ID 登录用户id
 const LOGIN_USER_ID = "LoginUserId"
-
-// LOGIN_USER_ID_SIGN 登录用户签名
 const LOGIN_USER_ID_SIGN = "loginUserIdSign"
 
 var (

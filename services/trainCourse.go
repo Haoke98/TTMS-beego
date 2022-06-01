@@ -60,14 +60,14 @@ func (*TrainCourseService) CheckLogin(loginForm formvalidate.LoginForm, ctx *con
 		return nil, errors.New("用户被冻结")
 	}
 
-	ctx.Output.Session(global.LOGIN_USER, adminUser)
+	ctx.Output.Session(global.LOGIN_ADMIN_USER, adminUser)
 
 	if loginForm.Remember != "" {
-		ctx.SetCookie(global.LOGIN_USER_ID, strconv.Itoa(adminUser.Id), 7200)
-		ctx.SetCookie(global.LOGIN_USER_ID_SIGN, adminUser.GetSignStrByAdminUser(ctx), 7200)
+		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID, strconv.Itoa(adminUser.Id), 7200)
+		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID_SIGN, adminUser.GetSignStrByAdminUser(ctx), 7200)
 	} else {
-		ctx.SetCookie(global.LOGIN_USER_ID, ctx.GetCookie(global.LOGIN_USER_ID), -1)
-		ctx.SetCookie(global.LOGIN_USER_ID_SIGN, ctx.GetCookie(global.LOGIN_USER_ID_SIGN), -1)
+		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID, ctx.GetCookie(global.LOGIN_ADMIN_USER_ID), -1)
+		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID_SIGN, ctx.GetCookie(global.LOGIN_ADMIN_USER_ID_SIGN), -1)
 	}
 
 	return &adminUser, nil

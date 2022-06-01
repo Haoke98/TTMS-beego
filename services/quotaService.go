@@ -120,3 +120,17 @@ func (s *QuotaService) CreateOrUpdate(form *formvalidate.QuotaForm) int {
 		return 0
 	}
 }
+
+func (s *QuotaService) GetTotalCount(planId int) int {
+	o := orm.NewOrm()
+	var quotas []*models.Quota
+	_, err := o.QueryTable(new(models.Quota)).Filter("plan_id", planId).All(&quotas)
+	if err != nil {
+		return -1
+	}
+	total := 0
+	for _, q := range quotas {
+		total += q.Quota
+	}
+	return total
+}

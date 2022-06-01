@@ -257,7 +257,7 @@ func (auc *AdminUserController) UpdateNickName() {
 	}
 
 	// 验证是否是登陆用户，这里也可不用提供的id，使用登陆的id即可
-	if loginUser.Id != id{
+	if loginUser.Id != id {
 		response.ErrorWithMessage("数据非法", auc.Ctx)
 	}
 
@@ -267,7 +267,7 @@ func (auc *AdminUserController) UpdateNickName() {
 	if num > 0 {
 		//修改成功后，更新session的登录用户信息
 		loginAdminUser := adminUserService.GetAdminUserById(id)
-		auc.SetSession(global.LOGIN_USER, *loginAdminUser)
+		auc.SetSession(global.LOGIN_ADMIN_USER, *loginAdminUser)
 		response.SuccessWithMessageAndUrl("修改成功", global.URL_RELOAD, auc.Ctx)
 	} else {
 		response.Error(auc.Ctx)
@@ -282,7 +282,7 @@ func (auc *AdminUserController) UpdatePassword() {
 	reNewPassword := auc.GetString("renew_password")
 
 	// 验证是否是登陆用户，这里也可不用提供的id，使用登陆的id即可
-	if loginUser.Id != id{
+	if loginUser.Id != id {
 		response.ErrorWithMessage("数据非法", auc.Ctx)
 	}
 
@@ -337,7 +337,7 @@ func (auc *AdminUserController) UpdateAvatar() {
 		if num > 0 {
 			//修改成功后，更新session的登录用户信息
 			loginAdminUser := adminUserService.GetAdminUserById(loginUser.Id)
-			auc.SetSession(global.LOGIN_USER, *loginAdminUser)
+			auc.SetSession(global.LOGIN_ADMIN_USER, *loginAdminUser)
 			response.SuccessWithMessageAndUrl("修改成功", global.URL_RELOAD, auc.Ctx)
 		} else {
 			response.Error(auc.Ctx)

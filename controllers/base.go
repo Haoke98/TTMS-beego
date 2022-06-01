@@ -53,7 +53,7 @@ func (bc *baseController) Prepare() {
 
 	//登录用户
 	var isOk bool
-	loginUser, isOk = bc.GetSession(global.LOGIN_USER).(models.AdminUser)
+	loginUser, isOk = bc.GetSession(global.LOGIN_ADMIN_USER).(models.AdminUser)
 
 	//基础变量
 	runMode := beego.AppConfig.String("runmode")
