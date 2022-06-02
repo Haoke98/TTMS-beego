@@ -72,7 +72,7 @@ func (ac *AdminAuthController) Logout() {
 func (ac *AdminAuthController) CheckLogin() {
 	//数据校验
 	valid := validation.Validation{}
-	loginForm := formvalidate.LoginForm{}
+	loginForm := formvalidate.AdminLoginForm{}
 
 	if err := ac.ParseForm(&loginForm); err != nil {
 		response.ErrorWithMessage(err.Error(), ac.Ctx)

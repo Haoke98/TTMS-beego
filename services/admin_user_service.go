@@ -40,7 +40,7 @@ func (*AdminUserService) AuthCheck(url string, authExcept map[string]interface{}
 }
 
 // CheckLogin 用户登录验证
-func (*AdminUserService) CheckLogin(loginForm formvalidate.LoginForm, ctx *context.Context) (*models.AdminUser, error) {
+func (*AdminUserService) CheckLogin(loginForm formvalidate.AdminLoginForm, ctx *context.Context) (*models.AdminUser, error) {
 	var adminUser models.AdminUser
 	o := orm.NewOrm()
 	err := o.QueryTable(new(models.AdminUser)).Filter("username", loginForm.Username).Limit(1).One(&adminUser)
@@ -62,7 +62,7 @@ func (*AdminUserService) CheckLogin(loginForm formvalidate.LoginForm, ctx *conte
 
 	if loginForm.Remember != "" {
 		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID, strconv.Itoa(adminUser.Id), 7200)
-		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID_SIGN, adminUser.GetSignStrByAdminUser(ctx), 7200)
+		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID_SIGN, adminUser.GetSignStr(ctx), 7200)
 	} else {
 		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID, ctx.GetCookie(global.LOGIN_ADMIN_USER_ID), -1)
 		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID_SIGN, ctx.GetCookie(global.LOGIN_ADMIN_USER_ID_SIGN), -1)

@@ -50,8 +50,8 @@ func init() {
 	orm.RegisterModel(new(AdminUser))
 }
 
-// GetSignStrByAdminUser 获取加密字符串，用在登录的时候加密处理
-func (adminUser *AdminUser) GetSignStrByAdminUser(ctx *context.Context) string {
+// GetSignStr 获取加密字符串，用在登录的时候加密处理
+func (adminUser *AdminUser) GetSignStr(ctx *context.Context) string {
 	ua := ctx.Input.Header("user-agent")
 	return fmt.Sprintf("%x", sha1.Sum([]byte(fmt.Sprintf("%d%s%s", adminUser.Id, adminUser.Username, ua))))
 }

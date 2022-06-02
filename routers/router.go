@@ -206,17 +206,16 @@ func init() {
 		web.NSRouter("/plan", &controllers.TrainPlanController{}, "get:Get"),
 	)
 
+	//鉴权
 	auth := web.NewNamespace("/auth",
-		//登录页
-		web.NSRouter("/login", &controllers.AdminAuthController{}, "get:Login"),
+		//登录认证
+		web.NSRouter("/login", &controllers.UserAuthController{}, "post:Login"),
 		//退出登录
-		web.NSRouter("/logout", &controllers.AdminAuthController{}, "get:Logout"),
+		web.NSRouter("/logout", &controllers.UserAuthController{}, "get:Logout"),
 		//二维码图片输出
 		web.NSHandler("/captcha/*.png", captcha.Server(240, 80)),
-		//登录认证
-		web.NSRouter("/check_login", &controllers.AdminAuthController{}, "post:CheckLogin"),
 		//刷新验证码
-		web.NSRouter("/refresh_captcha", &controllers.AdminAuthController{}, "post:RefreshCaptcha"),
+		web.NSRouter("/refresh_captcha", &controllers.UserAuthController{}, "post:RefreshCaptcha"),
 	)
 
 	web.AddNamespace(admin, train, auth)

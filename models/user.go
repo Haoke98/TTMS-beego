@@ -1,7 +1,10 @@
 package models
 
 import (
+	"crypto/sha1"
+	"fmt"
 	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/server/web/context"
 )
 
 // User struct
@@ -44,6 +47,12 @@ func (*User) WhereField() []string {
 // TimeField 定义可做为时间范围查询的字段
 func (*User) TimeField() []string {
 	return []string{}
+}
+
+// GetSignStr 获取加密字符串，用在登录的时候加密处理
+func (u *User) GetSignStr(ctx *context.Context) string {
+	ua := ctx.Input.Header("user-agent")
+	return fmt.Sprintf("%x", sha1.Sum([]byte(fmt.Sprintf("%d%s%s", u.Id, u.Username, ua))))
 }
 
 //在init中注册定义的model

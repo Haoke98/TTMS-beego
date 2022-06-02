@@ -6,13 +6,11 @@ import (
 	"beego-admin/global/response"
 	"beego-admin/services"
 	"beego-admin/utils"
+	"encoding/json"
 	"github.com/beego/beego/v2/adapter/validation"
 	"github.com/dchest/captcha"
 	"github.com/gookit/validate"
-	"net/http"
-	"os"
 	"strconv"
-	"strings"
 )
 
 var userLogService services.UserLogService
@@ -22,98 +20,63 @@ type UserAuthController struct {
 	baseController
 }
 
-// Login 登录界面
-func (ac *UserAuthController) Login() {
-	//加载登录配置信息
-	var settingService services.SettingService
-	data := settingService.Show(1)
-	for _, setting := range data {
-		settingService.LoadOrUpdateGlobalBaseConfig(setting)
-	}
-
-	//获取登录配置信息
-	loginConfig := struct {
-		Token      string
-		Captcha    string
-		Background string
-	}{
-		Token:   global.BA_CONFIG.Login.Token,
-		Captcha: global.BA_CONFIG.Login.Captcha,
-	}
-	//登录背景图片
-	if _, err := os.Stat(strings.TrimLeft(global.BA_CONFIG.Login.Background, "/")); err != nil {
-		global.BA_CONFIG.Login.Background = "/static/admin/images/login-default-bg.jpg"
-	}
-	loginConfig.Background = global.BA_CONFIG.Login.Background
-
-	//login界面只需要name字段
-	admin := map[string]interface{}{
-		"name":  global.BA_CONFIG.Base.Name,
-		"title": "登录",
-	}
-
-	ac.Data["login_config"] = loginConfig
-	//登录验证码
-	ac.Data["captcha"] = utils.GetCaptcha()
-	ac.Data["admin"] = admin
-
-	ac.TplName = "auth/login.html"
-}
-
-// Logout 退出登录
-func (ac *UserAuthController) Logout() {
-	ac.DelSession(global.LOGIN_ADMIN_USER)
-	ac.Ctx.SetCookie(global.LOGIN_ADMIN_USER_ID, "", -1)
-	ac.Ctx.SetCookie(global.LOGIN_ADMIN_USER_ID_SIGN, "", -1)
-	ac.Redirect("/admin/auth/login", http.StatusFound)
-}
-
-// CheckLogin 登录认证
-func (ac *UserAuthController) CheckLogin() {
+// Login 普通用户登录认证
+func (uac *UserAuthController) Login() {
 	//数据校验
 	valid := validation.Validation{}
 	loginForm := formvalidate.LoginForm{}
-
-	if err := ac.ParseForm(&loginForm); err != nil {
-		response.ErrorWithMessage(err.Error(), ac.Ctx)
+	if err := json.Unmarshal(uac.Ctx.Input.RequestBody, &loginForm); err != nil {
+		response.ErrorWithMessage(err.Error(), uac.Ctx)
 	}
+	//
+	//if err := uac.ParseForm(&loginForm); err != nil {
+	//	response.ErrorWithMessage(err.Error(), uac.Ctx)
+	//}
 
 	v := validate.Struct(loginForm)
 
+	//TODO：这里图形验证码是必须的，但是初期开发就先不高的那么复杂，不进行验证。
 	//看是否需要校验验证码
 	isCaptcha, _ := strconv.Atoi(global.BA_CONFIG.Login.Captcha)
 	if isCaptcha > 0 {
 		valid.Required(loginForm.Captcha, "captcha").Message("请输入验证码.")
 		if ok := captcha.VerifyString(loginForm.CaptchaId, loginForm.Captcha); !ok {
-			response.ErrorWithMessage("验证码错误.", ac.Ctx)
+			response.ErrorWithMessage("验证码错误.", uac.Ctx)
 		}
 	}
 
 	if !v.Validate() {
-		response.ErrorWithMessage(v.Errors.One(), ac.Ctx)
+		response.ErrorWithMessage(v.Errors.One(), uac.Ctx)
 	}
 
 	//基础验证通过后，进行用户验证
-	var adminUserService services.AdminUserService
-	loginUser, err := adminUserService.CheckLogin(loginForm, ac.Ctx)
+	var userService services.UserService
+	loginUser, err := userService.CheckLogin(loginForm, uac.Ctx)
 	if err != nil {
-		response.ErrorWithMessage(err.Error(), ac.Ctx)
+		response.ErrorWithMessage(err.Error(), uac.Ctx)
 	}
 
 	//登录日志记录
-	userLogService.LoginLog(loginUser.Id, ac.Ctx)
+	userLogService.LoginLog(loginUser.Id, uac.Ctx)
 
-	redirect, _ := ac.GetSession("redirect").(string)
+	redirect, _ := uac.GetSession("redirect").(string)
 	if redirect != "" {
-		response.SuccessWithMessageAndUrl("登录成功", redirect, ac.Ctx)
+		response.SuccessWithMessageAndUrl("登录成功", redirect, uac.Ctx)
 	} else {
-		response.SuccessWithMessageAndUrl("登录成功", "/admin/index/index", ac.Ctx)
+		response.SuccessWithMessageAndUrl("登录成功", "/admin/index/index", uac.Ctx)
 	}
 }
 
+// Logout 退出登录
+func (uac *UserAuthController) Logout() {
+	uac.DelSession(global.LOGIN_USER)
+	uac.Ctx.SetCookie(global.LOGIN_USER_ID, "", -1)
+	uac.Ctx.SetCookie(global.LOGIN_USER_ID_SIGN, "", -1)
+}
+
 // RefreshCaptcha 刷新验证码
-func (ac *UserAuthController) RefreshCaptcha() {
-	captchaID := ac.GetString("captchaId")
+func (uac *UserAuthController) RefreshCaptcha() {
+	captchaID := uac.GetString("captchaId")
 	res := map[string]interface{}{
 		"isNew": false,
 	}
@@ -129,7 +92,7 @@ func (ac *UserAuthController) RefreshCaptcha() {
 		res["captcha"] = utils.GetCaptcha()
 	}
 
-	ac.Data["json"] = res
+	uac.Data["json"] = res
 
-	ac.ServeJSON()
+	uac.ServeJSON()
 }

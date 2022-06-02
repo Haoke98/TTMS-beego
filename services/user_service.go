@@ -2,12 +2,16 @@ package services
 
 import (
 	"beego-admin/formvalidate"
+	"beego-admin/global"
 	"beego-admin/models"
 	"beego-admin/utils"
 	"beego-admin/utils/page"
 	"encoding/base64"
+	"errors"
 	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/server/web/context"
 	"net/url"
+	"strconv"
 	"time"
 )
 
@@ -149,4 +153,37 @@ func (us *UserService) GetExportData(params url.Values) []*models.User {
 		return nil
 	}
 	return user
+}
+
+// CheckLogin 用户登录验证
+func (*UserService) CheckLogin(loginForm formvalidate.LoginForm, ctx *context.Context) (*models.User, error) {
+	var user models.User
+	o := orm.NewOrm()
+	err := o.QueryTable(new(models.User)).Filter("username", loginForm.Username).Limit(1).One(&user)
+	if err != nil {
+		return nil, errors.New("用户不存在")
+	}
+
+	decodePasswdStr, err := base64.StdEncoding.DecodeString(user.Password)
+
+	if err != nil || !utils.PasswordVerify(loginForm.Password, string(decodePasswdStr)) {
+		return nil, errors.New("密码错误")
+	}
+
+	if user.Status != 1 {
+		return nil, errors.New("用户被冻结")
+	}
+
+	ctx.Output.Session(global.LOGIN_USER, user)
+
+	if loginForm.Remember == true {
+		ctx.SetCookie(global.LOGIN_USER_ID, strconv.Itoa(user.Id), 7200)
+		ctx.SetCookie(global.LOGIN_USER_ID_SIGN, user.GetSignStr(ctx), 7200)
+	} else {
+		ctx.SetCookie(global.LOGIN_USER_ID, ctx.GetCookie(global.LOGIN_USER_ID), -1)
+		ctx.SetCookie(global.LOGIN_USER_ID_SIGN, ctx.GetCookie(global.LOGIN_USER_ID_SIGN), -1)
+	}
+
+	return &user, nil
+
 }

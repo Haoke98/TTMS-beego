@@ -2,17 +2,13 @@ package services
 
 import (
 	"beego-admin/formvalidate"
-	"beego-admin/global"
 	"beego-admin/models"
 	"beego-admin/utils"
 	"beego-admin/utils/page"
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"github.com/beego/beego/v2/client/orm"
-	"github.com/beego/beego/v2/server/web/context"
 	"net/url"
-	"strconv"
 	"time"
 )
 
@@ -61,39 +57,6 @@ func (*TrainPlanService) AuthCheck(url string, authExcept map[string]interface{}
 		return true
 	}
 	return false
-}
-
-// CheckLogin 用户登录验证
-func (*TrainPlanService) CheckLogin(loginForm formvalidate.LoginForm, ctx *context.Context) (*models.AdminUser, error) {
-	var adminUser models.AdminUser
-	o := orm.NewOrm()
-	err := o.QueryTable(new(models.AdminUser)).Filter("username", loginForm.Username).Limit(1).One(&adminUser)
-	if err != nil {
-		return nil, errors.New("用户不存在")
-	}
-
-	decodePasswdStr, err := base64.StdEncoding.DecodeString(adminUser.Password)
-
-	if err != nil || !utils.PasswordVerify(loginForm.Password, string(decodePasswdStr)) {
-		return nil, errors.New("密码错误")
-	}
-
-	if adminUser.Status != 1 {
-		return nil, errors.New("用户被冻结")
-	}
-
-	ctx.Output.Session(global.LOGIN_ADMIN_USER, adminUser)
-
-	if loginForm.Remember != "" {
-		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID, strconv.Itoa(adminUser.Id), 7200)
-		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID_SIGN, adminUser.GetSignStrByAdminUser(ctx), 7200)
-	} else {
-		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID, ctx.GetCookie(global.LOGIN_ADMIN_USER_ID), -1)
-		ctx.SetCookie(global.LOGIN_ADMIN_USER_ID_SIGN, ctx.GetCookie(global.LOGIN_ADMIN_USER_ID_SIGN), -1)
-	}
-
-	return &adminUser, nil
-
 }
 
 // GetCount 获取admin_user 总数

@@ -88,7 +88,7 @@ func isLogin(ctx *context.Context) (*models.AdminUser, bool) {
 			var adminUserService services.AdminUserService
 			loginUserPointer := adminUserService.GetAdminUserById(loginUserID)
 
-			if loginUserPointer != nil && loginUserPointer.GetSignStrByAdminUser((*context2.Context)(ctx)) == loginUserIDSign {
+			if loginUserPointer != nil && loginUserPointer.GetSignStr((*context2.Context)(ctx)) == loginUserIDSign {
 				ctx.Output.Session(global.LOGIN_ADMIN_USER, *loginUserPointer)
 				return loginUserPointer, true
 			}
