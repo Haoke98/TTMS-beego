@@ -1,7 +1,7 @@
 package response
 
 import (
-	"beego-admin/global"
+	"TTMS/global"
 	"fmt"
 	beego "github.com/beego/beego/v2/adapter"
 	"github.com/beego/beego/v2/server/web/context"
@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	ERROR   = 0
-	SUCCESS = 1
+	ERROR        = 0
+	SUCCESS      = 1
+	UN_AUTHORIZE = 2
 )
 
 // Response 响应参数结构体
@@ -24,35 +25,33 @@ type Response struct {
 
 // Result 返回结果辅助函数
 func Result(code int, msg string, data interface{}, url string, wait int, header map[string]string, ctx *context.Context) {
-	if ctx.Input.IsPost() {
-		result := Response{
-			Code: code,
-			Msg:  msg,
-			Data: data,
-			Url:  url,
-			Wait: wait,
-		}
-
-		if len(header) > 0 {
-			for k, v := range header {
-				ctx.Output.Header(k, v)
-			}
-		}
-
-		ctx.Output.JSON(result, false, false)
-
-		//Controller中this.StopRun()用法
-		panic(beego.ErrAbort)
+	result := Response{
+		Code: code,
+		Msg:  msg,
+		Data: data,
+		Url:  url,
+		Wait: wait,
 	}
 
+	if len(header) > 0 {
+		for k, v := range header {
+			ctx.Output.Header(k, v)
+		}
+	}
+
+	_ = ctx.Output.JSON(result, false, false)
 	if url == "" {
 		url = ctx.Request.Referer()
 		if url == "" {
 			url = "/admin/index/index"
 		}
 	}
-
-	ctx.Redirect(http.StatusFound, url)
+	if url != global.URL_CURRENT {
+		ctx.Redirect(http.StatusFound, url)
+	} else {
+		//Controller中this.StopRun()用法
+		panic(beego.ErrAbort)
+	}
 }
 
 // Success 成功、普通返回

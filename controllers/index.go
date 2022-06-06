@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"beego-admin/global"
-	"beego-admin/services"
-	"beego-admin/utils"
+	"TTMS/global"
+	"TTMS/services"
+	"TTMS/utils"
 	"bufio"
 	"encoding/base64"
 	beego "github.com/beego/beego/v2/adapter"

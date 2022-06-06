@@ -1,8 +1,8 @@
 package services
 
 import (
-	"beego-admin/models"
-	"beego-admin/utils"
+	"TTMS/models"
+	"TTMS/utils"
 	"github.com/beego/beego/v2/client/orm"
 	"sort"
 	"strconv"

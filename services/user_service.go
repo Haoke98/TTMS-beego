@@ -1,11 +1,11 @@
 package services
 
 import (
-	"beego-admin/formvalidate"
-	"beego-admin/global"
-	"beego-admin/models"
-	"beego-admin/utils"
-	"beego-admin/utils/page"
+	"TTMS/formvalidate"
+	"TTMS/global"
+	"TTMS/models"
+	"TTMS/utils"
+	"TTMS/utils/page"
 	"encoding/base64"
 	"errors"
 	"github.com/beego/beego/v2/client/orm"
@@ -180,8 +180,8 @@ func (*UserService) CheckLogin(loginForm formvalidate.LoginForm, ctx *context.Co
 		ctx.SetCookie(global.LOGIN_USER_ID, strconv.Itoa(user.Id), 7200)
 		ctx.SetCookie(global.LOGIN_USER_ID_SIGN, user.GetSignStr(ctx), 7200)
 	} else {
-		ctx.SetCookie(global.LOGIN_USER_ID, ctx.GetCookie(global.LOGIN_USER_ID), -1)
-		ctx.SetCookie(global.LOGIN_USER_ID_SIGN, ctx.GetCookie(global.LOGIN_USER_ID_SIGN), -1)
+		ctx.SetCookie(global.LOGIN_USER_ID, strconv.Itoa(user.Id), -1)
+		ctx.SetCookie(global.LOGIN_USER_ID_SIGN, user.GetSignStr(ctx), -1)
 	}
 
 	return &user, nil

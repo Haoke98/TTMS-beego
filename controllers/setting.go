@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"beego-admin/global"
-	"beego-admin/global/response"
-	"beego-admin/services"
+	"TTMS/global"
+	"TTMS/global/response"
+	"TTMS/services"
 	"encoding/json"
 	"strconv"
 )

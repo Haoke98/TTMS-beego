@@ -2,16 +2,16 @@
 # redis configuration
 redis:
   db: 0
-  addr: '127.0.0.1:6379'
-  password: ''
+  addr: '218.31.113.195:9736'
+  password: 'xfdsx1234567'
 
 # mysql connect configuration
 mysql:
-  host: '127.0.0.1'
-  port: 3306
-  database: 'beego-admin'
-  username: 'root'
-  password: 'root'
+  host: '1.117.112.57'
+  port: 3307
+  database: 'ttms-bego-admin'
+  username: 'ttms-bego-admin'
+  password: 'yMzGhM5hBYChzyzi'
 
 # other configuration
 other:

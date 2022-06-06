@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"beego-admin/formvalidate"
-	"beego-admin/global"
-	"beego-admin/global/response"
-	"beego-admin/models"
-	"beego-admin/services"
-	"beego-admin/utils"
+	"TTMS/formvalidate"
+	"TTMS/global"
+	"TTMS/global/response"
+	"TTMS/models"
+	"TTMS/services"
+	"TTMS/utils"
 	"encoding/base64"
 	"github.com/adam-hanna/arrayOperations"
 	"github.com/gookit/validate"
@@ -46,26 +46,29 @@ type PlanDTO1 struct {
 func (c *TrainPlanController) Get() {
 	var trainPlanService services.TrainPlanService
 	var quotaService services.QuotaService
-	data, pagination := trainPlanService.GetPaginateData(admin["per_page"].(int), gQueryParams)
-	var plans []PlanDTO1
-	for _, plan := range data {
-		plans = append(plans, PlanDTO1{
-			Id:         plan.Id,
-			Title:      plan.Title,
-			Summary:    "想不想通过专业的培训达到自己的教育梦，提高自己的教师技能，课堂效率？那还愣着干嘛？赶快行动啊！",
-			Cover:      "",
-			Status:     0,
-			Favor:      trainPlanService.IsFavor(plan.Id, 0),
-			Applicants: 92,
-			Quota:      quotaService.GetTotalCount(plan.Id),
-			Start:      plan.RegistrationStartedAt.Format("06/01/02 15:04"),
-			End:        plan.RegistrationStartedAt.Format("06/01/02 15:04")})
+	user, ok := c.Ctx.Input.Session(global.LOGIN_USER).(models.User)
+	if ok {
+		data, pagination := trainPlanService.GetPaginateData(admin["per_page"].(int), gQueryParams)
+		var plans []PlanDTO1
+		for _, plan := range data {
+			plans = append(plans, PlanDTO1{
+				Id:         plan.Id,
+				Title:      plan.Title,
+				Summary:    "想不想通过专业的培训达到自己的教育梦，提高自己的教师技能，课堂效率？那还愣着干嘛？赶快行动啊！",
+				Cover:      "",
+				Status:     0,
+				Favor:      trainPlanService.IsFavor(plan.Id, user.Id),
+				Applicants: 92,
+				Quota:      quotaService.GetTotalCount(plan.Id),
+				Start:      plan.RegistrationStartedAt.Format("06/01/02 15:04"),
+				End:        plan.RegistrationStartedAt.Format("06/01/02 15:04")})
+		}
+		c.Data["json"] = map[string]interface{}{
+			"plans":      plans,
+			"pagination": pagination,
+		}
+		c.ServeJSON()
 	}
-	c.Data["json"] = map[string]interface{}{
-		"plans":      plans,
-		"pagination": pagination,
-	}
-	c.ServeJSON()
 }
 
 // Add 培训计划管理-添加界面

@@ -2,7 +2,7 @@ package formvalidate
 
 import "github.com/gookit/validate"
 
-// AdminLoginForm login 表单
+// AdminLoginForm 管理员登陆表单
 type AdminLoginForm struct {
 	Username  string `form:"username" json:"username" validate:"required"`
 	Password  string `form:"password" json:"password" validate:"required"`

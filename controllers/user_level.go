@@ -1,14 +1,14 @@
 package controllers
 
 import (
-	"beego-admin/formvalidate"
-	"beego-admin/global"
-	"beego-admin/global/response"
-	"beego-admin/models"
-	"beego-admin/services"
-	"beego-admin/utils"
-	"beego-admin/utils/exceloffice"
-	"beego-admin/utils/template"
+	"TTMS/formvalidate"
+	"TTMS/global"
+	"TTMS/global/response"
+	"TTMS/models"
+	"TTMS/services"
+	"TTMS/utils"
+	"TTMS/utils/exceloffice"
+	"TTMS/utils/template"
 	"github.com/adam-hanna/arrayOperations"
 	"github.com/gookit/validate"
 	"strconv"

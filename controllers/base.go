@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"beego-admin/global"
-	"beego-admin/models"
-	"beego-admin/services"
+	"TTMS/global"
+	"TTMS/models"
+	"TTMS/services"
 	beego "github.com/beego/beego/v2/adapter"
 	"net/url"
 	"strconv"

@@ -1,10 +1,10 @@
 package services
 
 import (
-	"beego-admin/formvalidate"
-	"beego-admin/models"
-	"beego-admin/utils"
-	"beego-admin/utils/page"
+	"TTMS/formvalidate"
+	"TTMS/models"
+	"TTMS/utils"
+	"TTMS/utils/page"
 	"encoding/base64"
 	"fmt"
 	"github.com/beego/beego/v2/client/orm"
@@ -217,10 +217,13 @@ func (*TrainPlanService) Del(ids []int) int {
 
 func (s *TrainPlanService) IsFavor(planId, userId int) bool {
 	o := orm.NewOrm()
-	var fp *models.FavorPlan
-	err := o.QueryTable(new(models.FavorPlan)).Filter("plan_id", planId).Filter("user_id", userId).One(&fp)
-	if err == nil && fp != nil {
-		return true
+	qs := o.QueryTable(new(models.FavorPlan)).Filter("plan_id", planId).Filter("user_id", userId)
+	if qs.Exist() {
+		var fp *models.FavorPlan
+		err := qs.One(fp)
+		if err == nil && fp != nil {
+			return true
+		}
 	}
 	return false
 }

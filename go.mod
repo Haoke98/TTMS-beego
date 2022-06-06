@@ -1,4 +1,4 @@
-module beego-admin
+module TTMS
 
 go 1.15
 

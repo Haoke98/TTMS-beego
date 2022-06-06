@@ -1,8 +1,8 @@
 package services
 
 import (
-	"beego-admin/formvalidate"
-	"beego-admin/models"
+	"TTMS/formvalidate"
+	"TTMS/models"
 	"github.com/beego/beego/v2/client/orm"
 )
 

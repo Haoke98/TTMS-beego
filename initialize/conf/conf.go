@@ -1,8 +1,8 @@
 package conf
 
 import (
-	"beego-admin/global"
-	"beego-admin/utils"
+	"TTMS/global"
+	"TTMS/utils"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"

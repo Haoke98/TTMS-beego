@@ -1,11 +1,11 @@
 package services
 
 import (
-	"beego-admin/formvalidate"
-	"beego-admin/global"
-	"beego-admin/models"
-	"beego-admin/utils"
-	"beego-admin/utils/page"
+	"TTMS/formvalidate"
+	"TTMS/global"
+	"TTMS/models"
+	"TTMS/utils"
+	"TTMS/utils/page"
 	"encoding/base64"
 	"errors"
 	"github.com/beego/beego/v2/client/orm"

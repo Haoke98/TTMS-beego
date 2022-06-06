@@ -1,7 +1,7 @@
 package test
 
 import (
-	_ "beego-admin/routers"
+	_ "TTMS/routers"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"

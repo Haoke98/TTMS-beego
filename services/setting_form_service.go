@@ -1,7 +1,7 @@
 package services
 
 import (
-	"beego-admin/utils"
+	"TTMS/utils"
 	"strings"
 )
 

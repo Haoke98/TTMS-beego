@@ -1,6 +1,6 @@
 package global
 
-import "beego-admin/conf"
+import "TTMS/conf"
 
 // URL_CURRENT 不做任何操作
 const URL_CURRENT = "url://current"

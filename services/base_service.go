@@ -1,8 +1,8 @@
 package services
 
 import (
-	"beego-admin/utils"
-	"beego-admin/utils/page"
+	"TTMS/utils"
+	"TTMS/utils/page"
 	"github.com/beego/beego/v2/client/orm"
 	"net/url"
 	"strings"

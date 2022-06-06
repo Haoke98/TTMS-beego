@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"beego-admin/formvalidate"
-	"beego-admin/global"
-	"beego-admin/global/response"
-	"beego-admin/services"
-	"beego-admin/utils"
+	"TTMS/formvalidate"
+	"TTMS/global"
+	"TTMS/global/response"
+	"TTMS/services"
+	"TTMS/utils"
 	"github.com/beego/beego/v2/adapter/validation"
 	"github.com/dchest/captcha"
 	"github.com/gookit/validate"

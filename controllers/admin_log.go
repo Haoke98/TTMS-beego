@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"beego-admin/services"
+	"TTMS/services"
 )
 
 // AdminLogController struct.

@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"beego-admin/global"
-	"beego-admin/global/response"
-	"beego-admin/models"
-	"beego-admin/services"
+	"TTMS/global"
+	"TTMS/global/response"
+	"TTMS/models"
+	"TTMS/services"
 	"fmt"
 	beego "github.com/beego/beego/v2/adapter"
 	"github.com/beego/beego/v2/adapter/context"
@@ -13,8 +13,8 @@ import (
 	"strings"
 )
 
-// AuthMiddle 中间件
-func AuthMiddle() {
+// AdminAuthMiddle 管理员鉴权中间件
+func AdminAuthMiddle() {
 
 	//不需要验证的url
 	authExcept := map[string]interface{}{
@@ -31,9 +31,9 @@ func AuthMiddle() {
 		url := strings.TrimLeft(ctx.Input.URL(), "/")
 
 		//需要进行登录验证
-		if !isAuthExceptUrl(strings.ToLower(url), authExcept) {
+		if !isAdminAuthExceptUrl(strings.ToLower(url), authExcept) {
 			//验证是否登录
-			loginUser, isLogin := isLogin(ctx)
+			loginUser, isLogin := isAdminLogin(ctx)
 			if !isLogin {
 				response.ErrorWithMessageAndUrl("未登录", "/admin/auth/login", (*context2.Context)(ctx))
 				return
@@ -64,7 +64,7 @@ func AuthMiddle() {
 }
 
 //判断是否是不需要验证登录的url,只针对admin模块路由的判断
-func isAuthExceptUrl(url string, m map[string]interface{}) bool {
+func isAdminAuthExceptUrl(url string, m map[string]interface{}) bool {
 	urlArr := strings.Split(url, "/")
 	if len(urlArr) > 3 {
 		url = fmt.Sprintf("%s/%s/%s", urlArr[0], urlArr[1], urlArr[2])
@@ -77,7 +77,7 @@ func isAuthExceptUrl(url string, m map[string]interface{}) bool {
 }
 
 //是否登录
-func isLogin(ctx *context.Context) (*models.AdminUser, bool) {
+func isAdminLogin(ctx *context.Context) (*models.AdminUser, bool) {
 	loginUser, ok := ctx.Input.Session(global.LOGIN_ADMIN_USER).(models.AdminUser)
 	if !ok {
 		loginUserIDStr := ctx.GetCookie(global.LOGIN_ADMIN_USER_ID)

@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"beego-admin/formvalidate"
-	"beego-admin/global/response"
-	"beego-admin/services"
+	"TTMS/formvalidate"
+	"TTMS/global/response"
+	"TTMS/services"
 	"github.com/gookit/validate"
 )
 

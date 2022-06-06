@@ -1,10 +1,10 @@
 package services
 
 import (
-	"beego-admin/global"
-	"beego-admin/models"
-	"beego-admin/utils/encrypter"
-	"beego-admin/utils/page"
+	"TTMS/global"
+	"TTMS/models"
+	"TTMS/utils/encrypter"
+	"TTMS/utils/page"
 	"encoding/json"
 	beego "github.com/beego/beego/v2/adapter"
 	"github.com/beego/beego/v2/server/web/context"
@@ -37,7 +37,7 @@ func (*AdminLogService) CreateAdminLog(loginUser *models.AdminUser, menu *models
 
 	o := orm.NewOrm()
 	//开启事务
-	to,err := o.Begin()
+	to, err := o.Begin()
 
 	adminLogID, err := to.Insert(&adminLog)
 	if err != nil {
@@ -75,7 +75,7 @@ func (*AdminLogService) LoginLog(loginUserID int, ctx *context.Context) {
 	o := orm.NewOrm()
 
 	//开启事务
-	to,err := o.Begin()
+	to, err := o.Begin()
 
 	adminLogID, err := o.Insert(&adminLog)
 	if err != nil {

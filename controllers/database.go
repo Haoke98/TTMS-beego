@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"beego-admin/global/response"
-	"beego-admin/services"
+	"TTMS/global/response"
+	"TTMS/services"
 )
 
 // DatabaseController struct

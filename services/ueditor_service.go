@@ -1,7 +1,7 @@
 package services
 
 import (
-	"beego-admin/global"
+	"TTMS/global"
 	"encoding/base64"
 	beego "github.com/beego/beego/v2/adapter"
 	"github.com/beego/beego/v2/server/web/context"

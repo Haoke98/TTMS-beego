@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"beego-admin/controllers"
-	"beego-admin/middleware"
+	"TTMS/controllers"
+	"TTMS/middleware"
 	"github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/server/web/context"
 	"github.com/dchest/captcha"
@@ -11,7 +11,8 @@ import (
 
 func init() {
 	//授权登录中间件
-	middleware.AuthMiddle()
+	middleware.AdminAuthMiddle()
+	middleware.UserAuthMiddle()
 
 	web.Get("/", func(ctx *context.Context) {
 		ctx.Redirect(http.StatusFound, "/admin/index/index")
@@ -202,21 +203,23 @@ func init() {
 
 		web.NSRouter("/petition/index", &controllers.PetitionController{}, "get:Index"),
 	)
-	train := web.NewNamespace("/train",
-		web.NSRouter("/plan", &controllers.TrainPlanController{}, "get:Get"),
+
+	cclient := web.NewNamespace("/client",
+		web.NSNamespace("/train",
+			web.NSRouter("/plan", &controllers.TrainPlanController{}, "get:Get"),
+		),
+		//鉴权
+		web.NSNamespace("/auth",
+			//登录认证
+			web.NSRouter("/login", &controllers.UserAuthController{}, "post:Login"),
+			//退出登录
+			web.NSRouter("/logout", &controllers.UserAuthController{}, "get:Logout"),
+			//二维码图片输出
+			web.NSHandler("/captcha/*.png", captcha.Server(240, 80)),
+			//刷新验证码
+			web.NSRouter("/refresh_captcha", &controllers.UserAuthController{}, "post:RefreshCaptcha"),
+		),
 	)
 
-	//鉴权
-	auth := web.NewNamespace("/auth",
-		//登录认证
-		web.NSRouter("/login", &controllers.UserAuthController{}, "post:Login"),
-		//退出登录
-		web.NSRouter("/logout", &controllers.UserAuthController{}, "get:Logout"),
-		//二维码图片输出
-		web.NSHandler("/captcha/*.png", captcha.Server(240, 80)),
-		//刷新验证码
-		web.NSRouter("/refresh_captcha", &controllers.UserAuthController{}, "post:RefreshCaptcha"),
-	)
-
-	web.AddNamespace(admin, train, auth)
+	web.AddNamespace(admin, cclient)
 }

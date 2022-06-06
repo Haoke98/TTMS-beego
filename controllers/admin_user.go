@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"beego-admin/formvalidate"
-	"beego-admin/global"
-	"beego-admin/global/response"
-	"beego-admin/models"
-	"beego-admin/services"
-	"beego-admin/utils"
+	"TTMS/formvalidate"
+	"TTMS/global"
+	"TTMS/global/response"
+	"TTMS/models"
+	"TTMS/services"
+	"TTMS/utils"
 	"encoding/base64"
 	"github.com/adam-hanna/arrayOperations"
 	"github.com/gookit/validate"

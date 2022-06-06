@@ -1,8 +1,8 @@
 package services
 
 import (
-	"beego-admin/global"
-	"beego-admin/models"
+	"TTMS/global"
+	"TTMS/models"
 	"encoding/json"
 	"github.com/beego/beego/v2/client/orm"
 )
