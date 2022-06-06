@@ -1,12 +1,12 @@
 package main
 
 import (
-	_ "beego-admin/initialize/conf"
-	_ "beego-admin/initialize/mysql"
-	_ "beego-admin/initialize/session"
-	_ "beego-admin/models"
-	_ "beego-admin/routers"
-	_ "beego-admin/utils/template"
+	_ "TTMS/initialize/conf"
+	_ "TTMS/initialize/mysql"
+	_ "TTMS/initialize/session"
+	_ "TTMS/models"
+	_ "TTMS/routers"
+	_ "TTMS/utils/template"
 	beego "github.com/beego/beego/v2/adapter"
 	"github.com/beego/beego/v2/adapter/context"
 	"github.com/beego/beego/v2/client/orm"
